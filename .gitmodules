@@ -1,0 +1,3 @@
+[submodule "Knora/Knora"]
+	path = Knora/Knora
+	url = https://github.com/dhlab-basel/Knora
