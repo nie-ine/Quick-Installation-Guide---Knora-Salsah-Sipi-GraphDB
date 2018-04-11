@@ -26,8 +26,8 @@ services:
       - ./tmp:/tmp
       - $HOME:$HOME
       - ./images:/sipi/images
-      - ../Knora/webapiTemp:/tmp/webapi_tmp/
-      - ../KnoSaSi-PrebuiltImages/sipiConfig:/sipi/config
+      - ./tmp/webapiTemp:/tmp/webapi_tmp/
+      - ./Prebuiltimages/sipiConfig:/sipi/config
 
   salsah:
     build: ./Salsah
