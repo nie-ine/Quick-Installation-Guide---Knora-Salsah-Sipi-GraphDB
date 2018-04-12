@@ -21,7 +21,7 @@ After you have chosen your alternative, only perform the instructions that are n
 |   | Instructions   | Alternative 1| Alternative 2  | 
 |--:| ------------- |:-------------:| :-----:        |
 | 0 | If you use Mac OS X: Make sure that you have increased the memory allocated to Docker as described above under "Prerequisites" | x | x |
-| 1 | <pre>git clone --recursive <this repository></pre> | x | x |
+| 1 | <pre>git clone --recursive this repository</pre> | x | x |
 | 2 | Change hostname for graphdb to "graphdb" and sipi to "sipi", both are localhost before this change.| not necessary for alternative 1 | x in Knora/Knora/webapi /src /main /resources /application.conf|
 | 3 | Map the name sipi to the ip address of localhost. e.g. next to localhost the name sipi should be mapped to the same ip adress as localhost. <pre>sudo vi /etc/hosts</pre> The file should contain the following lines:<pre>127.0.0.1       localhost</pre><pre>127.0.0.1       sipi</pre>| x in /etc/hosts file | <--- x|
 | 4 | <pre>docker-compose up</pre> Wait until Salsah, Sipi and GraphDB are running. If no new lines show up from docker-compose in the terminal, check the services in the Browser. Knora should not give any response at this point. The services are available at: Sipi: localhost:1024, Knora: localhost:3333, GraphDB: localhost:7200, Salsah: localhost:4200 | x in ./PrebuiltImages | x in ./ --> meaning in docker-compose-deployment-Knora-Salsah-Sipi-GraphDB |
