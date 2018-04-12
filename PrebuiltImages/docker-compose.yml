@@ -25,7 +25,6 @@ services:
       - ./tmp:/tmp
       - $HOME:$HOME
       - ./images:/sipi/images
-      - ./tmp/webapi_tmp:/tmp/webapi_tmp/
       - ./sipiConfig:/sipi/config
 
   salsah:

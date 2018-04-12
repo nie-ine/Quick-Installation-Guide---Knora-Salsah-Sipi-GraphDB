@@ -16,7 +16,7 @@ services:
       - graphdb
     volumes:
       - ./Knora/webapi/src/main:/Knora/webapi/src/main
-      - ./webapiTmp:/tmp/webapi_tmp/
+      - ./tmp:/tmp
 
   sipi:
     image: nieine/sipi
@@ -26,7 +26,6 @@ services:
       - ./tmp:/tmp
       - $HOME:$HOME
       - ./images:/sipi/images
-      - ./tmp/webapiTemp:/tmp/webapi_tmp/
       - ./Prebuiltimages/sipiConfig:/sipi/config
 
   salsah:
