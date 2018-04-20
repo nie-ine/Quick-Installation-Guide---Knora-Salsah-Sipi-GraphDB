@@ -2,32 +2,32 @@ version: "3"
 
 services:
   graphdb:
-    image: dhlabbasel/graphdb-free
+    image: nieine/graphdb:20180420
     ports:
       - 7200:7200
     depends_on:
       - salsah
 
   knora:
-    image: nieine/knora
+    image: nieine/knora:c6e558e
     ports:
       - 3333:3333
     depends_on:
       - graphdb
     volumes:
-      - ./tmp/webapi_tmp:/tmp/webapi_tmp/
+      - ../tmp/webapi_tmp:/tmp/webapi_tmp/
 
   sipi:
-    image: nieine/sipi
+    image: nieine/sipi:20171113
     ports:
       - 1024:1024
     volumes:
-      - ./tmp:/tmp
+      - ../tmp:/tmp
       - $HOME:$HOME
-      - ./images:/sipi/images
-      - ./sipiConfig:/sipi/config
+      - ../images:/sipi/images
+      - ../sipiConfig:/sipi/config
 
   salsah:
-    image: nieine/salsah
+    image: nieine/salsah:0244827
     ports:
       - 4200:4200
