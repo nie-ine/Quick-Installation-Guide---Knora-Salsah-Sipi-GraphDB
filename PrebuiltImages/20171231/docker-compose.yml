@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  graphdb:
+    image: nieine/graphdb:20180420
+    ports:
+      - 7200:7200
+    depends_on:
+      - salsah
+
+  sipi:
+    image: nieine/sipi:20171113
+    ports:
+      - 1024:1024
+    volumes:
+      - /tmp:/tmp
+      - $HOME:$HOME
+      - ../images:/sipi/images
+      - ../sipiConfig:/sipi/config
+
+  salsah:
+    image: nieine/salsah:firstUpload
+    ports:
+      - 4200:4200
