@@ -16,7 +16,7 @@ This information is just for documentation purposes, please move on to the next 
  Run Knora outside of docker container, docker has a bug with Knora for version c6e558e, so we will run it without docker.
  - <pre>git clone https://github.com/dhlab-basel/Knora.git</pre> 
  - <pre>cd Knora && git checkout c6e558e</pre>
- - <pre>sbt</pre>
+ - <pre>cd webapi && sbt</pre>
  - <pre>compile</pre>
  - <pre>reStart</pre>
  
