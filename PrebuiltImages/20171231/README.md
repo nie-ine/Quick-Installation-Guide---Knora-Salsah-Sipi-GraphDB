@@ -1,5 +1,12 @@
 # Remarks:
 
+### Version information - Github hashes and docker hub tags
+ - NIE-INE Ontologies: https://github.com/nie-ine/Ontologies.git 91dffaa
+ - Salsah: https://hub.docker.com/r/nieine/salsah/tags/ firstUpload
+ - Knora: https://github.com/dhlab-basel/Knora.git c6e558e
+ - GraphDB: https://hub.docker.com/r/nieine/graphdb/tags/ 20180420
+ - Sipi: https://hub.docker.com/r/nieine/sipi/tags/ 20171113
+
 ### Start dhlab stack with docker-compose
  - <pre>docker-compose up (in this folder)</pre>
 
@@ -30,6 +37,5 @@
   there were no reported errors regarding the nie-ontologies. Check at loclahost:4200 if Salsah shows the NIE ontologies.
   
   - Run the import.py script. 
-  - With Postman or sth similar, perform the following http request: <pre>localhost:3333/v2/search/resource</pre>
-  The word that you search for in this case is "resource, since the given label in import.py is "test resource" it should give the result.
-  
+  - With Postman or sth similar (Salsah does not show results when executing search at the moment..), perform the following http request: <pre>localhost:3333/v2/search/resource</pre>
+  The word that you search for in this case is "resource", since the given label in import.py is "test resource" it should give the result.
