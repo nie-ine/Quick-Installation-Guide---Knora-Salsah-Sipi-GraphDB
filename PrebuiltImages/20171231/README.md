@@ -1,6 +1,7 @@
 # Remarks:
 
 ### Version information - Github hashes and docker hub tags
+This information is just for documentation purposes, please move on to the next section to start docker-compose.
  - NIE-INE Ontologies: https://github.com/nie-ine/Ontologies.git 91dffaa
  - Salsah: https://hub.docker.com/r/nieine/salsah/tags/ firstUpload
  - Knora: https://github.com/dhlab-basel/Knora.git c6e558e
