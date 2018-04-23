@@ -28,6 +28,7 @@ This information is just for documentation purposes, please move on to the next 
  - Work is in progress to load the files automatically. You can find out what to replace here, your paths will be different so you can do it manually if you would like, or via shell:
  - <pre>https://github.com/nie-ine/Quick-Installation-Guide---Knora-Salsah-Sipi-GraphDB/blob/master/NIE-INE-Ontologies/Dockerfile</pre>
  - In the same Dockerfile, you can see which script to execute in Knora/Knora/webapi/scripts to import the NIE-INE ontologies.
+So please execute <pre>./graphdb-free-init-knora-test.sh</pre> in Knora/webapi/scripts and wait until its finished.
  
  ### Restart Knora
   - In the terminal where we start Knora don't stop sbt, just type <pre>reStart</pre> Knora will restart.
