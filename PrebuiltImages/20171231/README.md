@@ -19,6 +19,7 @@ This information is just for documentation purposes, please move on to the next 
  - <pre>cd webapi && sbt</pre>
  - <pre>compile</pre>
  - <pre>reStart</pre>
+ - Furthermore, please do <pre>mkdir /tmp/webapi_tmp</pre> if you don't have already this folder, it will be used by sipi and knora
  
  ### Loading NIE-INE Ontologies
  To import the NIE-INE ontologies do the following:
