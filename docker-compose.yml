@@ -25,7 +25,7 @@ services:
     volumes:
       - ./tmp:/tmp
       - $HOME:$HOME
-      - ./images:/sipi/images
+      - ./Sipi/images:/sipi/images
       - ./Prebuiltimages/sipiConfig:/sipi/config
 
   salsah:
