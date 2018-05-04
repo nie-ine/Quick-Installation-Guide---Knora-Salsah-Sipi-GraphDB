@@ -1,1 +1,0 @@
-FROM nieine/sipi
