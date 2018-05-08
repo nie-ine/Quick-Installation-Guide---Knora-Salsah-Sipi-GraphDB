@@ -7,6 +7,8 @@ services:
       - 7200:7200
     depends_on:
       - salsah
+    environment:
+      - VIRTUAL_HOST=graphdb.localhost
 
   knora:
     image: nieine/knora:c2320fd
@@ -16,6 +18,8 @@ services:
       - graphdb
     volumes:
       - ../tmp/webapi_tmp:/tmp/webapi_tmp/
+    environment:
+      - VIRTUAL_HOST=knora.localhost
 
   sipi:
     image: nieine/sipi:20171113
@@ -26,8 +30,19 @@ services:
       - $HOME:$HOME
       - ../Sipi/images:/sipi/images
       - ../sipiConfig:/sipi/config
+    environment:
+      - VIRTUAL_HOST=sipi.localhost
 
   salsah:
     image: nieine/salsah:5fba91e
     ports:
       - 4200:4200
+    environment:
+      - VIRTUAL_HOST=salsah.localhost
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
