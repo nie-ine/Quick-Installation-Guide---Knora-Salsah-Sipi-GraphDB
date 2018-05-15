@@ -1,6 +1,6 @@
 # docker run -v ./Ontologies/NIE_Knora_ontology-dependency/:/usr/src/app/nieKnoraDependencies
 
-FROM ubuntu:17.10
+FROM nieine/graphdb:20180420
 
 RUN apt-get update
 RUN apt-get upgrade -y
@@ -23,6 +23,6 @@ RUN cp -fr /Ontologies/NIE_Knora_ontology-dependency/graphdb-knora-test-data.exp
 # Copy NIE-INE Ontologies
 RUN cp  -R /Ontologies/nie-ontologies/. /Knora/webapi/_test_data/ontologies/
 
+RUN cd /Knora/webapi/scripts/ && ./graphdb-free-init-knora-test.sh
 
-
-CMD cd /Knora/webapi/scripts/ && ./graphdb-free-init-knora-test.sh
+CMD ["/graphdb/bin/graphdb"]

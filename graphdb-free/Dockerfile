@@ -1,6 +1,7 @@
-FROM ubuntu:17.04
+FROM ubuntu:18.04
 
 MAINTAINER Ivan Subotic "ivan.subotic@unibas.ch"
+# adapted by Jan Clemens Stoffregen jan.stoffregen@uzh.ch
 
 # Silence debconf messages
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
@@ -29,6 +30,28 @@ RUN \
 
 # Set GraphDB Max and Min Heap size
 ENV GDB_HEAP_SIZE="4g"
+
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get install -y curl
+RUN apt-get install -y git
+RUN apt-get install -y expect
+RUN git clone https://github.com/dhlab-basel/Knora.git
+RUN git clone https://github.com/nie-ine/Ontologies.git
+
+COPY . /
+
+# Copy admin data
+RUN cp -fr /Ontologies/NIE_Knora_ontology-dependency/admin-data.ttl /Knora/webapi/_test_data/all_data/
+
+# Copy permissions data
+RUN cp -fr /Ontologies/NIE_Knora_ontology-dependency/permissions-data.ttl /Knora/webapi/_test_data/all_data/
+
+# Copy Expect File
+RUN cp -fr /Ontologies/NIE_Knora_ontology-dependency/graphdb-knora-test-data.expect /Knora/webapi/scripts/
+
+# Copy NIE-INE Ontologies
+RUN cp  -R /Ontologies/nie-ontologies/. /Knora/webapi/_test_data/ontologies/
 
 EXPOSE 7200
 CMD ["/graphdb/bin/graphdb"]

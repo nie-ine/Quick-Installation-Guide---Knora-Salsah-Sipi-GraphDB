@@ -4,11 +4,11 @@ import requests, json
 
 # a Python dictionary that will be turned into a JSON object
 resourceParams = {
-   'restype_id': 'http://www.knora.org/ontology/anything#ThingPicture',
+   'restype_id': 'http://www.knora.org/ontology/0001/anything#ThingPicture',
    'properties': {
    },
    'label': "test resource",
-   'project_id': 'http://rdfh.ch/projects/anything'
+   'project_id': 'http://rdfh.ch/projects/0001'
 }
 
 # the name of the file to be submitted

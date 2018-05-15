@@ -28,7 +28,7 @@ services:
     volumes:
       - ../tmp:/tmp
       - $HOME:$HOME
-      - ../Sipi/images:/sipi/images
+      - ../../Sipi/images:/sipi/images
       - ../sipiConfig:/sipi/config
     environment:
       - VIRTUAL_HOST=sipi.localhost
@@ -46,3 +46,10 @@ services:
       - "80:80"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
+
+  nie-os:
+    image: nieine/nie-frontend:devel
+    ports:
+      - 1234:1234
+    environment:
+      - NGINX_PORT=1234
