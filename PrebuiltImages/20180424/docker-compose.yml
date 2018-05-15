@@ -2,7 +2,7 @@ version: "3"
 
 services:
   graphdb:
-    image: nieine/graphdb:20180420
+    image: nieine/graphdb:20180515
     ports:
       - 7200:7200
     depends_on:

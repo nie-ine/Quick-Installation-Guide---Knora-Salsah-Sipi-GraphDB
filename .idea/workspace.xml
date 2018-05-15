@@ -2,15 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="298646bb-6545-4895-9f66-3774c0aaa983" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Knora/bulkImportFolder/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Knora/Knora" afterPath="$PROJECT_DIR$/Knora/Knora" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Knora/Knora" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Sipi/images/knora/A/README.md" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Sipi/images/knora/B/README.md" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Sipi/images/knora/C/README.md" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/PrebuiltImages/20180420/README.md" afterPath="$PROJECT_DIR$/PrebuiltImages/20180420_deprecated/README.md" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/PrebuiltImages/20180420/docker-compose.yml" afterPath="$PROJECT_DIR$/PrebuiltImages/20180420_deprecated/docker-compose.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitmodules" afterPath="$PROJECT_DIR$/.gitmodules" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ImportPictureTest/import.py" afterPath="$PROJECT_DIR$/ImportPictureTest/import.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/NIE-INE-Ontologies/Dockerfile" afterPath="$PROJECT_DIR$/NIE-INE-Ontologies/Dockerfile" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PrebuiltImages/20180420/docker-compose.yml" afterPath="$PROJECT_DIR$/PrebuiltImages/20180420/docker-compose.yml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PrebuiltImages/20180424/docker-compose.yml" afterPath="$PROJECT_DIR$/PrebuiltImages/20180424/docker-compose.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/graphdb-free/Dockerfile" afterPath="$PROJECT_DIR$/graphdb-free/Dockerfile" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -24,22 +24,35 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="docker-compose.yml" pinned="false" current-in-tab="false">
+      <file leaf-file-name="docker-compose.yml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/PrebuiltImages/20180424/docker-compose.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
-              <caret line="19" column="42" lean-forward="true" selection-start-line="19" selection-start-column="42" selection-end-line="19" selection-end-column="42" />
+            <state relative-caret-position="541">
+              <caret line="54" column="23" lean-forward="true" selection-start-line="54" selection-start-column="23" selection-end-line="54" selection-end-column="23" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/README.md">
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Sipi/images/knora/B/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="360">
-                <caret line="24" column="130" lean-forward="true" selection-start-line="24" selection-start-column="73" selection-end-line="24" selection-end-column="180" />
+              <first_editor relative-caret-position="0">
+                <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+                <folding />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Sipi/images/knora/C/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="0">
+                <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -78,11 +91,13 @@
         <option value="$PROJECT_DIR$/ImportPictureTest/import.py" />
         <option value="$PROJECT_DIR$/Knora/Knora/webapi/scripts/graphdb-knora-test-data.expect" />
         <option value="$PROJECT_DIR$/Salsah/Dockerfile" />
-        <option value="$PROJECT_DIR$/NIE-INE-Ontologies/Dockerfile" />
         <option value="$PROJECT_DIR$/graphdb-free/Dockerfile" />
         <option value="$PROJECT_DIR$/Knora/bulkImportFolder/README.md" />
-        <option value="$PROJECT_DIR$/PrebuiltImages/20180424/docker-compose.yml" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/.gitmodules" />
+        <option value="$PROJECT_DIR$/NIE-INE-Ontologies/Dockerfile" />
+        <option value="$PROJECT_DIR$/Sipi/images/knora/A/README.md" />
+        <option value="$PROJECT_DIR$/PrebuiltImages/20180424/docker-compose.yml" />
       </list>
     </option>
   </component>
@@ -156,6 +171,11 @@
               <item name="Quick-Installation-Guide---Knora-Salsah-Sipi-GraphDB" type="462c0819:PsiDirectoryNode" />
               <item name="NIE-INE-Ontologies" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="Quick-Installation-Guide---Knora-Salsah-Sipi-GraphDB" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Quick-Installation-Guide---Knora-Salsah-Sipi-GraphDB" type="462c0819:PsiDirectoryNode" />
+              <item name="PrebuiltImages" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -171,15 +191,15 @@
     <property name="HbShouldOpenHtmlAsHb" value="" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/nginx" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Sipi/images/knora/C" />
+      <recent name="$PROJECT_DIR$/Sipi/images/knora/B" />
       <recent name="$PROJECT_DIR$/Knora/Knora/webapi/_test_data/ontologies" />
       <recent name="$PROJECT_DIR$/Knora/Knora/webapi/scripts" />
       <recent name="$PROJECT_DIR$/Knora/Knora/webapi/_test_data/all_data" />
-      <recent name="$PROJECT_DIR$/PrebuiltImages/20171231" />
-      <recent name="$PROJECT_DIR$/PrebuiltImages" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/nginx" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -221,12 +241,12 @@
       <workItem from="1525768547837" duration="4175000" />
       <workItem from="1525780558247" duration="5802000" />
       <workItem from="1525875027858" duration="653000" />
-      <workItem from="1526371214275" duration="5149000" />
+      <workItem from="1526371214275" duration="11237000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="67299000" />
+    <option name="totallyTimeSpent" value="73387000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1440" y="-300" width="1920" height="1200" extended-state="0" />
@@ -238,7 +258,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32919255" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4498669" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39840284" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -261,37 +281,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/ImportPictureTest/import.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PrebuiltImages/20171231/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="450">
-            <caret line="30" column="115" lean-forward="false" selection-start-line="30" selection-start-column="115" selection-end-line="30" selection-end-column="115" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/NIE-INE-Ontologies/Dockerfile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/updateOntology.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="68" lean-forward="true" selection-start-line="1" selection-start-column="35" selection-end-line="1" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/docker-compose.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
@@ -387,7 +376,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PrebuiltImages/20180420/README.md">
+    <entry file="file://$PROJECT_DIR$/PrebuiltImages/20180420_deprecated/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
           <first_editor relative-caret-position="30">
@@ -478,7 +467,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PrebuiltImages/20180420/docker-compose.yml">
+    <entry file="file://$PROJECT_DIR$/PrebuiltImages/20180420_deprecated/docker-compose.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="480">
           <caret line="32" column="17" lean-forward="true" selection-start-line="32" selection-start-column="17" selection-end-line="32" selection-end-column="17" />
@@ -520,18 +509,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PrebuiltImages/20180424/docker-compose.yml">
+    <entry file="file://$PROJECT_DIR$/.gitmodules">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="19" column="42" lean-forward="true" selection-start-line="19" selection-start-column="42" selection-end-line="19" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/NIE-INE-Ontologies/Dockerfile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="28" lean-forward="true" selection-start-line="2" selection-start-column="28" selection-end-line="2" selection-end-column="28" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -540,10 +521,59 @@
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
           <first_editor relative-caret-position="360">
-            <caret line="24" column="130" lean-forward="true" selection-start-line="24" selection-start-column="73" selection-end-line="24" selection-end-column="180" />
+            <caret line="24" column="130" lean-forward="false" selection-start-line="24" selection-start-column="73" selection-end-line="24" selection-end-column="180" />
             <folding />
           </first_editor>
           <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/NIE-INE-Ontologies/Dockerfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" column="28" lean-forward="true" selection-start-line="20" selection-start-column="28" selection-end-line="20" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Sipi/images/knora/A/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="0">
+            <caret line="0" column="31" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="31" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Sipi/images/knora/B/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="0">
+            <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Sipi/images/knora/C/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="0">
+            <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PrebuiltImages/20180424/docker-compose.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="541">
+          <caret line="54" column="23" lean-forward="true" selection-start-line="54" selection-start-column="23" selection-end-line="54" selection-end-column="23" />
+          <folding />
         </state>
       </provider>
     </entry>
