@@ -35,10 +35,13 @@ services:
 
   salsah:
     image: nieine/salsah:5fba91e
+    volumes:
+      - ../../Salsah/environment.ts:/Salsah/src/environments/environment.ts
     ports:
       - 4200:4200
     environment:
       - VIRTUAL_HOST=salsah.localhost
+    command: ng serve --host 0.0.0.0 --disable-host-check
 
   nginx-proxy:
     image: jwilder/nginx-proxy
@@ -52,4 +55,5 @@ services:
     ports:
       - 1234:1234
     environment:
-      - NGINX_PORT=1234
+      - NGINX_HOST=nie-os.localhost
+      - VIRTUAL_HOST=nie-os.localhost
