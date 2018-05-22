@@ -17,7 +17,9 @@ services:
     depends_on:
       - graphdb
     volumes:
+      - $HOME:$HOME
       - ../tmp/webapi_tmp:/tmp/webapi_tmp/
+      - ../../Knora/application.conf:/webapi/config/application.conf
     environment:
       - VIRTUAL_HOST=knora.localhost
 
