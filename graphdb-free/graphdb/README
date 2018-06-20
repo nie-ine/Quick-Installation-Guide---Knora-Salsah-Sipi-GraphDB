@@ -1,0 +1,33 @@
+Prerequisites
+-------------
+GraphDB is a Java application and requires Java 8. Make sure you have an up-to-date Java 8 installation.
+You can download Java from https://java.com/en/download/help/download_options.xml.
+
+Starting GraphDB
+----------------
+Run the graphdb script in the bin directory. To access the Workbench, open http://localhost:7200 in a browser.
+
+To run GraphDB on a different port, add the parameter "-Dgraphdb.connector.port=<your-port>".
+This option can also be set in the config file graphdb.properties in the conf directory.
+
+To run GraphDB in server-only mode without the embedded Workbench, add the parameter "-s".
+
+Creating Repositories
+---------------------
+By default, the GraphDB will initialise a location but not create any repositories.
+You can create a new repository or connect to an existing one from the menu Setup -> Repositories page
+in the GraphDB Workbench:
+
+    - To create a new repository in the location, click on "Create new repository"" and fill in the form.
+    - To connect to a repository, use the dropdown in the menu or the slider next to the repo name on the same page.
+
+More information
+----------------
+The GraphDB Documentation:
+    http://graphdb.ontotext.com/documentation/free/
+
+The GraphDB Quick start guide:
+    http://graphdb.ontotext.com/documentation/free/quick-start-guide.html
+
+The GraphDB Developer Hub:
+    http://graphdb.ontotext.com/devhub/

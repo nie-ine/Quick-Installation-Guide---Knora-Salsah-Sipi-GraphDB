@@ -1,0 +1,301 @@
+<div class="ot-loader ot-loader-home" onto-loader-fancy size="100" ng-show="isLoadingLocation()"></div>
+<div class="content-wrapper" ng-hide="isLoadingLocation()" ng-cloak>
+    <div class="row mb-3 tutorial-container" ng-init="initTutorial()" ng-if="tutorialState">
+        <div class="col-lg-12">
+            <div class="card mt-2">
+                <div class="card-block">
+                    <button type="button" tooltip="Close" class="close" aria-label="Close"
+                            ng-click="declineTutorial()"></button>
+                    <div class="pages-wrapper">
+                        <div class="page-slide" ng-repeat="page in tutorialInfo track by $index">
+                            <h1 class="card-title">{{page.title}}</h1>
+                            <p class="card-text lead" ng-bind-html="page.info"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-block">
+                    <a href="#" class="btn btn-lg btn-primary" ng-click="slideNext()">OK, continue</a>
+                    <a href="#" class="btn btn-lg btn-outline-secondary" ng-click="declineTutorial()">No, thanks</a>
+                    <div class="btn-toolbar pull-right" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="btn-group" role="group" aria-label="First group">
+                            <button type="button" class="btn btn-secondary" ng-click="slideToPage($index)"
+                                    ng-repeat="page in tutorialInfo track by $index">{{$index + 1}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3" ng-if="getActiveRepository() && !isLoadingLocation() && hasActiveLocation()" ng-cloak>
+        <div class="col-lg-12">
+            <h3><span  tooltip="This is the main entry point for viewing and editing all RDF data related to a resource." tooltip-placement="right">View resource</span></h3>
+            <div class="card">
+                <div class="card-block">
+                    <search-resource-input
+                            namespacespromise="getNamespacesPromise"
+                            autocompletepromisestatus="getAutocompletePromise">
+                    </search-resource-input>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3"
+         ng-if="getActiveRepository() && !isLoadingLocation() && hasActiveLocation()"
+         ng-cloak>
+        <div class="col-lg-12">
+            <h3><span tooltip="Execute a saved SPARQL query directly" tooltip-placement="right">Saved SPARQL queries</span></h3>
+            <div class="card">
+                <ul class="list-group limit-height clearfix saved-queries" ng-init="getSavedQueries()">
+                    <li ng-repeat="query in sampleQueries" class="list-group-item list-group-item-action">
+                    <span class="help-label" ng-click="goToSparqlEditor(query)">Execute <span class="icon-caret-right"></span></span>
+                        <samp class="h5">{{query.name}}</samp>
+                        <samp class="text-muted small">{{query.body}}</samp>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3 row" ng-show="!isLoadingLocation() && hasActiveLocation()">
+        <div class="col-lg-12">
+            <h3>Repositories</h3>
+            <h6>{{getActiveLocation().label}}</h6>
+        </div>
+        <div class="col-lg-6">
+            <div role="alert" ng-if="!getActiveRepository()">
+                <div class="mb-3">
+                    <div class="card card-outline-warning">
+                        <div class="alert alert-warning lead">
+                            You are not connected to any repository.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card active acitve-repo"
+                 ng-repeat="repository in getRepositories()"
+                 ng-show="canReadRepo(getActiveLocation(), repository.id) && getActiveRepository() === repository.id">
+                <div class="card-block">
+                    <div class="actions-bar pull-right">
+                        <button type="button" tooltip="Copy repository URL to clipboard" class="btn btn-link"
+                                ng-click="copyToClipboard(repository.externalUrl)"><span class="icon-link"></span>
+                        </button>
+                        <button type="button" ng-click="goToEditRepo(repository.id)" class="btn btn-link" tooltip="Edit repository"
+                           ng-if="hasRole('ROLE_REPO_ADMIN') && repository.type !== 'system'">
+                            <span class="icon-edit"></span>
+                        </button>
+                        <button type="button" tooltip="Refresh repository info" class="btn btn-link"
+                                ng-if="getActiveRepository() === repository.id && repoSize && !repoSizeError"
+                                ng-click="getRepoSize(repository.id)"><span class="icon-reload"></span>
+                        </button>
+                    </div>
+                    <h3 class="card-title">
+                        <i tooltip-html-unsafe="Repository type: WORKER <br>{{repository.sesameType}}"
+                           tooltip-placement="top" tooltip-trigger="mouseenter"
+                           ng-show="repository.type === 'worker'"
+                           class="icon-repo-worker icon-2x"></i>
+                        <i tooltip-html-unsafe="Repository type: MASTER <br>{{repository.sesameType}}"
+                           tooltip-placement="top" tooltip-trigger="mouseenter"
+                           ng-show="repository.type === 'master'"
+                           class="icon-repo-master icon-2x"></i>
+                        <i tooltip-html-unsafe="Repository type: SE <br>{{repository.sesameType}}"
+                           tooltip-placement="top" tooltip-trigger="mouseenter"
+                           ng-show="repository.type === 'se'"
+                           class="icon-repo-standart icon-2x"></i>
+                        <i tooltip-html-unsafe="Repository type: FREE <br>{{repository.sesameType}}"
+                           tooltip-placement="top" tooltip-trigger="mouseenter"
+                           ng-show="repository.type === 'free'"
+                           class="icon-repo-free icon-2x"></i>
+                        <i tooltip-html-unsafe="Repository type: SYSTEM <br>{{repository.sesameType}}"
+                           tooltip-placement="top" tooltip-trigger="mouseenter" ng-show="repository.type === 'system'"
+                           class="icon-repo-system icon-2x"></i>
+                        {{repository.id}}</h3>
+                    <div ng-if="getActiveRepository() === repository.id && repoSize && !repoSizeError">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-xs-6 mb-1">
+                                    <span>statements</span>
+                                    <span class="data-value big" ng-if="repoSize.total !== -1">{{repoSize.total | currency:'':0}}</span>
+                                    <span class="data-value big" ng-if="repoSize.total === -1">&ndash;</span>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div>
+                                        <span class="data-value" ng-if="repoSize.explicit !== -1">{{repoSize.explicit | currency:'':0}}</span>
+                                        <span class="data-value" ng-if="repoSize.explicit === -1">&ndash;</span>
+                                        <span>explicit</span>
+                                    </div>
+                                    <div>
+                                        <span class="data-value" ng-if="repoSize.inferred !== -1">{{repoSize.inferred | currency:'':0}}</span>
+                                        <span class="data-value" ng-if="repoSize.inferred === -1">&ndash;</span>
+                                        <span class="">inferred</span>
+                                    </div>
+                                    <div>
+                                        <span class="data-value" ng-if="repoSize.explicit !== 0 && repoSize.total !== -1">{{repoSize.total / repoSize.explicit | number: 2}}</span>
+                                        <span class="data-value" ng-if="repoSize.explicit === 0 || repoSize.total === -1">&ndash;</span>
+                                        <span class="">expansion ratio</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="getActiveRepository() !== repository.id">
+                        <div class="d-inline-block">
+                            statements
+                            <span class="data-value big">&#45;</span>
+                        </div>
+                        <div class="d-inline-block">
+                            <div>
+                                <span class="data-value">&#45;</span>
+                                <span class="">explicit</span>
+                            </div>
+                            <div>
+                                <span class="data-value">&#45;</span>
+                                <span class="">inferred</span>
+                            </div>
+                            <div>
+                                <span class="data-value">&#45;</span>
+                                <span class="">expansion ratio</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="getActiveRepository() === repository.id && repoSizeError">
+                        <div class="d-inline-block mr-1 mb-1">
+                            error
+                            <span class="data-value big">{{repoSizeError}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <span class="icon-connection-on icon-2x m-0"></span><strong class="text-muted">Connected</strong>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card" ng-if="getRepositories().length > 1 || getActiveRepository() !== 'SYSTEM'">
+                <ul class="list-group limit-height container-fluid">
+                    <li ng-repeat="repository in getRepositories() | orderBy: 'id'| filter:'!system':true:repository.type"
+                        ng-if="canReadRepo(getActiveLocation(), repository.id) && getActiveRepository() !== repository.id" class="list-group-item row">
+                        <div class="col-xs-1">
+                        <span role="button" class="icon-connection-off icon-lg m-0" tooltip="Connect repository"
+                              tooltip-placement="top" tooltip-trigger="mouseenter"
+                              ng-click="changeRepository($event, repository.id)"></span>
+                        </div>
+                        <div class="col-xs-7">
+                            <i tooltip-html-unsafe="Repository type: WORKER <br>{{repository.sesameType}}"
+                               tooltip-placement="top" tooltip-trigger="mouseenter"
+                               ng-show="repository.type === 'worker'"
+                               class="icon-repo-worker icon-lg"></i>
+                            <i tooltip-html-unsafe="Repository type: MASTER <br>{{repository.sesameType}}"
+                               tooltip-placement="top" tooltip-trigger="mouseenter"
+                               ng-show="repository.type === 'master'"
+                               class="icon-repo-master icon-lg"></i>
+                            <i tooltip-html-unsafe="Repository type: SE <br>{{repository.sesameType}}"
+                               tooltip-placement="top" tooltip-trigger="mouseenter"
+                               ng-show="repository.type === 'se'"
+                               class="icon-repo-standart icon-lg"></i>
+                            <i tooltip-html-unsafe="Repository type: FREE <br>{{repository.sesameType}}"
+                               tooltip-placement="top" tooltip-trigger="mouseenter"
+                               ng-show="repository.type === 'free'"
+                               class="icon-repo-free icon-lg"></i>
+                            <strong>{{repository.id}}</strong>
+                            <span ng-if="getActiveRepository() === repository.id && repoSizeError"
+                                  class="text-danger small">
+                        {{repoSizeError}}
+                        </span>
+                        </div>
+                        <div class="col-xs-4">
+                            <button type="button" tooltip="Copy repository URL to clipboard"
+                                    class="btn btn-link p-0"
+                                    ng-click="copyToClipboard(repository.externalUrl)"><span
+                                    class="icon-link"></span>
+                            </button>
+                            <button type="button" ng-click="goToEditRepo(repository.id)" class="btn btn-link p-0"
+                               ng-if="hasRole('ROLE_REPO_ADMIN')"
+                               tooltip="Edit repository">
+                                <span class="icon-edit"></span>
+                            </button>
+                        </div>
+                    </li>
+
+                    <li ng-hide="isS4()"
+                        ng-repeat="repository in getRepositories() | filter:'system':true:repository.type"
+                        ng-if="canReadRepo(getActiveLocation(), repository.id) && getActiveRepository() !== repository.id"
+                        class="list-group-item row">
+                        <div class="col-xs-1">
+                        <span role="button" class="icon-connection-off icon-lg m-0" tooltip="Connect repository"
+                              tooltip-placement="top" tooltip-trigger="mouseenter"
+                              ng-click="changeRepository($event, repository.id)"></span>
+                        </div>
+                        <div class="col-xs-7">
+                            <i tooltip-html-unsafe="Repository type: SYSTEM <br>{{repository.sesameType}}"
+                               tooltip-placement="top" tooltip-trigger="mouseenter" ng-show="repository.type === 'system'"
+                               class="icon-repo-system icon-lg"></i>
+                            <strong>{{repository.id}}</strong>
+                        </div>
+                        <div class="col-xs-4">
+                            <button type="button" tooltip="Copy repository URL to clipboard"
+                                    class="btn btn-link p-0"
+                                    ng-click="copyToClipboard(repository.externalUrl)"><span
+                                    class="icon-link"></span>
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div ng-if="hasRole('ROLE_REPO_ADMIN') && !getDegradedReason()">
+                <button class="btn btn-link px-0" ng-click="goToAddRepo()">
+                    <span class="icon-plus"></span> Create new repository
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row mb-3">
+        <div class="col-lg-12">
+            <h2>License</h2>
+            <div class="card">
+                <h3 class="card-header">GraphDB {{productTypeHuman}} Edition</h3>
+                <!-- appears only when there is a problem with the license -->
+                <div class="alert alert-warning" role="alert" ng-hide="license.valid">
+                    <p>
+                        <strong>{{license.message}}</strong><br>
+                        Please supply a valid license or contact Ontotext AD sales department to aquire one.
+                    </p>
+                    <a href="license/register" ng-href="license/register" ng-hide="isLicenseHardcoded">
+                        <button class="btn btn-primary license-button">
+                            Set new license
+                        </button>
+                    </a>
+                </div>
+                <div class="card-block" ng-hide="hasActiveLocation()">
+                    <div class="">
+                        <div class="d-inline-block mr-1 mb-1">
+                            <span class="data-value big">License information cannot be shown because you are not connected to a location.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-block" ng-show="hasActiveLocation()">
+                    <div class="" ng-show="license.product">
+                        <div class="d-inline-block mr-2 mb-1">
+                            Licensed to
+                            <span class="data-value big">{{license.licensee}}</span>
+                        </div>
+                        <div class="d-inline-block mr-2 mb-1">
+                            Valid until
+                            <span class="data-value big">{{license.expiryDate ? (license.expiryDate | date : 'yyyy-MM-dd') : 'Perpetual'}}</span>
+                        </div>
+                        <div class="d-inline-block mb-1">
+                            Number of cores
+                            <span class="data-value big">{{license.maxCpuCores ? license.maxCpuCores : 'Unlimited'}}</span>
+                        </div>
+                    </div>
+
+                    <div class="small text-muted">
+                        {{license.typeOfUse}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

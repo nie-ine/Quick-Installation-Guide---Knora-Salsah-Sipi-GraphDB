@@ -1,0 +1,26 @@
+<div ng-init="getRepositorySize()" style="margin: -4px 0; padding: 10px">
+	<div class="row" ng-show="size.total" style="margin-top: 0">
+			<label style="margin-right: 10px">Statements:</label>
+		<span class="text-right pull-right">
+			{{size.total | currency:'':0}}
+		</span>
+	</div>
+	<div class="row" ng-show="size.explicit >= 0" style="margin-top: 0">
+			<label style="margin-right: 10px">Explicit:</label>
+		<span class="text-right pull-right">
+			{{size.explicit != 0 ? (size.explicit | currency:'':0) : 0}}
+		</span>
+	</div>
+	<div class="row" ng-show="size.inferred > 0" style="margin-top: 0">
+		<label style="margin-right: 10px">Inferred:</label>
+		<span class="text-right pull-right">
+			{{size.inferred | currency:'':0}}
+		</span>
+	</div>
+	<div class="row" ng-show="size.explicit >= 0" style="margin-top: 0">
+			<label style="margin-right: 10px">Expansion ratio (total/explicit):</label>
+		<span class="text-right pull-right">
+			{{size.explicit != 0 ? (size.total/size.explicit | currency:'') : '-'}}
+		</span>
+	</div>
+</div>

@@ -1,0 +1,1 @@
+The GraphDB documentation is available online at http://graphdb.ontotext.com.

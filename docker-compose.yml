@@ -2,14 +2,16 @@ version: "3"
 
 services:
   graphdb:
-    image: dhlabbasel/graphdb-free
+    build: ./graphdb-free
     ports:
       - 7200:7200
     depends_on:
       - salsah
+    volumes:
+      - ./graphdb-free/graphdb:/graphdb
 
   knora:
-    build: ./Knora
+    build: ./Knora/Knora/webapi
     ports:
       - 3333:3333
     depends_on:

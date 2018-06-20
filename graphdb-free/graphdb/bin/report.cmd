@@ -1,0 +1,1 @@
+@echo.This is the GraphDB report script. Report is not supported on Windows.

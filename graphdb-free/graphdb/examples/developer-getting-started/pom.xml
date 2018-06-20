@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <!--
+        NOTE:
+
+        Since GraphDB is not available from Maven Central (the public Maven repository),
+        you have to install the GraphDB runtime jar into your local Maven repository.
+
+        To do that, go to the examples/maven-installer subdirectory of the distribution and run:
+
+            mvn install
+
+        Note that the Maven executable, mvn, must be in your path.
+    -->
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.ontotext.graphdb.examples</groupId>
+    <artifactId>dev-examples</artifactId>
+    <packaging>jar</packaging>
+    <name>GraphDB Developer Examples</name>
+
+    <properties>
+        <java.level>1.8</java.level>
+        <project.version>8.2.0</project.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.ontotext.graphdb</groupId>
+            <artifactId>graphdb-free-runtime</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <source>${java.level}</source>
+                    <target>${java.level}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
