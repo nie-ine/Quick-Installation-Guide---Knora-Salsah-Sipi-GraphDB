@@ -2,7 +2,7 @@ version: "3"
 
 services:
   graphdb:
-    image: nieine/graphdb:20180524
+    image: dhlabbasel/graphdb-free
     ports:
       - 7200:7200
     depends_on:
@@ -13,7 +13,7 @@ services:
       - ../../graphdb-free/graphdb:/graphdb
 
   knora:
-    image: nieine/knora:c2320fd
+    image: nieine/knora:13d5861
     ports:
       - 3333:3333
     depends_on:
@@ -38,7 +38,7 @@ services:
       - VIRTUAL_HOST=sipi.localhost
 
   salsah:
-    image: nieine/salsah:5fba91e
+    image: nieine/salsah:4b01ce9
     volumes:
       - ../../Salsah/environment.ts:/Salsah/src/environments/environment.ts
     ports:

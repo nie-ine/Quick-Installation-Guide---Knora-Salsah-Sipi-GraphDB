@@ -11,7 +11,7 @@ services:
       - ./graphdb-free/graphdb:/graphdb
 
   knora:
-    build: ./Knora
+    build: ./Knora/Knora/webapi
     ports:
       - 3333:3333
     depends_on:

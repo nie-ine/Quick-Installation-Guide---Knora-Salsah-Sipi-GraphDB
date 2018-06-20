@@ -1,0 +1,9 @@
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="no.repository">No repository selected</entry>
+	<entry key="app.title">GraphDB Workbench</entry>
+	<entry key="loginTitle">Welcome to GraphDB Workbench</entry>
+	<entry key="loginSubTitle">An application for searching, exploring and managing GraphDB semantic repositories.</entry>
+	<entry key="app.description">An application for searching, exploring and managing GraphDB semantic repositories.</entry>
+	
+</properties>

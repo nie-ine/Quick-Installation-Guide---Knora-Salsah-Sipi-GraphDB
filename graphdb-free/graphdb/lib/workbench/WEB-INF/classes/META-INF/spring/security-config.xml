@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+	<context:component-scan base-package="com.ontotext.forest" />
+
+	<!-- jolokia security handled in JolokiaFilter in the engine, do not apply security in the workbench
+	http://www.baeldung.com/security-none-filters-none-access-permitAll
+	-->
+	<security:http security="none" pattern="/jolokia/**" />
+
+	<security:http
+		authentication-manager-ref="authenticationManager"
+		access-decision-manager-ref="repositoryAccessDecisionManager"
+		disable-url-rewriting="true"
+		create-session="stateless"
+		entry-point-ref="statelessEntryPoint">
+		<security:anonymous enabled="false"/>
+		<!-- 
+        <security:intercept-url pattern="/resource/add" access="ROLE_USER, REPO_SECURE" />
+		<security:intercept-url pattern="/resource/edit*" access="ROLE_USER, REPO_SECURE" />
+         -->
+
+		<!-- For CORS preflight requests. It doesn't hurt the normal security -->
+		<security:intercept-url pattern="/**" method="OPTIONS" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+
+		<!-- Common resources -->
+		<security:intercept-url pattern="/css/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <security:intercept-url pattern="/img/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/js/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/font/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/favicon.ico" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/webjars/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/pages/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+
+		<!-- GraphDB-EE cluster communication should be left open. Or maybe not? -->
+		<security:intercept-url pattern="/repositories/*/cluster/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+
+		<!-- Minimum system propertise needed for the app, read on init before login -->
+		<security:intercept-url pattern="/rest/info/properties" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/rest/info/version" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+
+		<!-- Sesame endpoints for accessing repositories -->
+		<!-- 	Listing repositories -->
+		<security:intercept-url pattern="/repositories" access="ROLE_USER" />
+		<!-- 	Read operations to namespaces, contexts and graphs -->
+		<security:intercept-url pattern="/repositories/**" method="GET" access="ROLE_USER, REPO_HALFSECURE" />
+		<!-- 	Deleting repositories -->
+		<security:intercept-url pattern="/repositories/*" method="DELETE" access="ROLE_REPO_ADMIN" />
+		<!-- 	Read-only queries to repositories -->
+		<security:intercept-url pattern="/repositories/*" access="ROLE_USER, REPO_HALFSECURE" />
+		<!-- 	Everything else, including write operations -->
+		<security:intercept-url pattern="/repositories/**" access="ROLE_USER, REPO_SECURE" />
+
+		<!-- Login should be accessible to everyone -->
+		<security:intercept-url pattern="/rest/login" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+
+		<!-- Login check and password change -->
+		<security:intercept-url pattern="/rest/security" method="GET" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/rest/security/freeaccess" method="GET" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <security:intercept-url pattern="/rest/security/overrideauth" method="GET" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/rest/security/user/password" access="ROLE_USER" />
+
+		<!-- Connector management -->
+		<security:intercept-url pattern="/rest/connectors" access="ROLE_USER, REPO_SECURE" />
+
+		<!-- Data import -->
+		<security:intercept-url pattern="/rest/data/import/**" access="ROLE_USER, REPO_SECURE" />
+
+
+		<!-- Admin/System information -->
+		<security:intercept-url pattern="/rest/info/data" access="ROLE_ADMIN" />
+		
+		<!-- License info needs to be readable by any user -->
+		<security:intercept-url pattern="/rest/info/**" access="ROLE_USER" />
+
+		<!-- Admin/Query or Resource monitoring -->
+		<security:intercept-url pattern="/rest/monitor/**" access="ROLE_REPO_ADMIN" />
+
+		<!-- Admin/REST API documentation -->
+		<security:intercept-url pattern="/v2/api-docs" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+
+		<!-- Admin/Location management -->
+		<security:intercept-url pattern="/rest/locations" method="GET" access="ROLE_REPO_ADMIN" />
+		<security:intercept-url pattern="/rest/locations" access="ROLE_ADMIN" />
+
+	
+		<!-- Admin/Users and Access -->
+		<security:intercept-url pattern="/rest/security/**" access="ROLE_ADMIN" />
+
+		<!-- Admin/Repository management -->
+		<security:intercept-url pattern="/rest/repositories/**" method="GET" access="ROLE_USER" />
+		<security:intercept-url pattern="/rest/repositories" method="POST" access="ROLE_REPO_ADMIN"/>
+		<security:intercept-url pattern="/rest/repositories/**" method="DELETE" access="ROLE_REPO_ADMIN"/>
+		<security:intercept-url pattern="/rest/repositories/**" method="PUT" access="ROLE_REPO_ADMIN"/>
+
+		<!-- Admin/Cluster management -->
+		<security:intercept-url pattern="/rest/repositories/cluster" access="ROLE_ADMIN"/>
+		<security:intercept-url pattern="/rest/cluster" access="ROLE_ADMIN" />
+
+		<!-- Saved queries retrieve all users -->
+		<security:intercept-url pattern="/rest/sparql/saved-queries/**" method="GET" access="ROLE_USER" />
+		<!-- Saved queries modification only users with write access -->
+		<security:intercept-url pattern="/rest/sparql/saved-queries/**" access="ROLE_USER, REPO_SECURE" />
+
+		<!-- Saved graphs retrieve all users -->
+		<security:intercept-url pattern="/rest/explore-graph/saved/**" method="GET" access="ROLE_USER" />
+		<!-- Saved graphs modification only users with write access -->
+		<security:intercept-url pattern="/rest/explore-graph/saved/**" access="ROLE_REAL_USER" />
+
+		<!-- Security for controllers in the Engine -->
+		<security:intercept-url pattern="/graphdb-settings/statistics" access="ROLE_REPO_ADMIN"/>
+		<security:intercept-url pattern="/graphdb-settings/**" method="GET" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+		<security:intercept-url pattern="/graphdb-settings/**" access="ROLE_ADMIN"/>
+
+		<!-- Resource management (editing data from View resource) -->
+		<security:intercept-url pattern="/rest/resource/**" access="ROLE_USER, REPO_SECURE" />
+
+		<!-- Everything else in the REST API -->
+		<security:intercept-url pattern="/rest/**" access="ROLE_USER" />
+
+		<!-- OntoRefine REST API, secured -->
+		<security:intercept-url pattern="/orefine/command/**" access="ROLE_USER" />
+		<!-- OntoRefine resources, no need for security -->
+		<security:intercept-url pattern="/orefine/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+
+		<security:http-basic />
+		<security:custom-filter ref="authFilter" before="BASIC_AUTH_FILTER"/>
+		<security:custom-filter ref="anonymousAuthFilter" position="ANONYMOUS_FILTER"/>
+		
+		<!-- 
+		<security:headers>
+			<security:frame-options/>
+			<security:xss-protection/>
+			<security:content-type-options />
+			<security:hsts />
+		</security:headers>
+		 -->
+	</security:http>
+
+</beans>

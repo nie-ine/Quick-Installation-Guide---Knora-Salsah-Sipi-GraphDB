@@ -1,0 +1,121 @@
+#!/bin/bash
+# vim: set sw=4 sts=4 et foldmethod=indent :
+
+set -o nounset
+set -o errexit
+
+usage() {
+    echo "Usage: report.sh <tomcat's-pid>"
+}
+
+[ $# -lt 1 ] && { echo "The program accepts a single argument, tomcat's pid"; usage; exit 1; }
+PID=$1
+
+PARAMS=$(ps $PID | grep "catalina.base")
+
+OIFS=$IFS
+IFS='  '
+
+export TOMCAT_BASE
+# This one has a default
+export ADUNA_BASE=~/.aduna
+export ADUNA_ALT_BASE=~/"Library/Application Support/Aduna"
+
+if [ ! -d "$ADUNA_BASE/openrdf-sesame/logs" ]; then
+    if [ -d "$ADUNA_ALT_BASE" ]; then
+        ADUNA_BASE="$ADUNA_ALT_BASE"
+    fi
+fi
+
+resolve_path() {
+    if [[ $1 = /* ]];then
+        echo $1
+    fi
+    echo $(readlink /proc/$PID/cwd)/$1
+}
+
+parseParameter() {
+    if [[ "$1" == "catalina.base"* ]];then
+        TOMCAT_BASE=${1:14}
+    elif [[ "$1" == "info.aduna.platform.appdata.basedir"* ]]; then
+        ADUNA_BASE=${1:36}
+        ADUNA_BASE=$(resolve_path $ADUNA_BASE)
+    fi
+}
+
+for x in $PARAMS;do
+    if [[ "$x" == "-D"* ]];then
+        parseParameter ${x:2}
+    fi
+done
+
+IFS=$OIFS
+
+if [ -z ${TOMCAT_BASE+x} ]; then
+        echo Running in embedded tomcat mode, can not collect info.
+        exit 1
+fi
+
+echo Found Tomcat home as $TOMCAT_BASE
+echo Found Aduna base as $ADUNA_BASE
+
+
+DIR="$PID-data"
+
+mkdir $DIR
+
+jstack $PID &> $DIR/jstack.txt
+jmap -histo $PID &> $DIR/jmap.txt
+
+
+jstat -gcutil $PID 1000 100 > $DIR/jstat-gcutil.txt 2>&1 &
+jstat_pid=$!
+
+for i in syslog system.log; do
+    if [ -r /var/log/$i ]; then
+        tail -1000 /var/log/$i &> $DIR/latest-1000-$i.log
+    fi
+done
+
+read -p "Did you change files in tomcat's conf directory?[y|n] (n): "
+
+if [ "$REPLY" == y ];then
+    cp -r $TOMCAT_BASE/conf $DIR/tomcat-dir
+fi
+
+echo Getting Tomcat version information
+$TOMCAT_BASE/bin/version.sh &> $DIR/tomcat-versions.txt
+
+echo Getting GraphDB version information
+rm -f $DIR/release.properties
+for i in $TOMCAT_BASE/webapps/*/WEB-INF/lib/graphdb-se-[1-9]*.jar\
+         $TOMCAT_BASE/webapps/*/WEB-INF/lib/graphdb-enterprise-[1-9]*.jar\
+         $TOMCAT_BASE/webapps/*/WEB-INF/lib/graphdb-*-runtime-[1-9]*.jar; do
+    if [ -r $i ]; then
+        echo $i: >> $DIR/release.properties
+        unzip -p $i META-INF/release.properties >> $DIR/release.properties 2>&1
+        echo >> $DIR/release.properties
+    fi
+done
+
+echo Collecting Tomcat runtime parameters
+echo $PARAMS &> $DIR/tomcat-runtime-params.txt
+
+echo Copying Tomcat logs from $TOMCAT_BASE/logs
+cp -r $TOMCAT_BASE/logs $DIR/tomcat-logs
+
+if [ -d "$ADUNA_BASE/openrdf-sesame/logs" ]; then
+    # Linux & generic
+    echo Copying Aduna logs from $ADUNA_BASE/openrdf-sesame/logs
+    cp -r "$ADUNA_BASE/openrdf-sesame/logs" $DIR/sesame-logs
+elif [ -d "$ADUNA_BASE/OpenRDF Sesame/logs" ]; then
+    # Mac OS
+    echo Copying Aduna logs from $ADUNA_BASE/OpenRDF Sesame/logs
+    cp -r "$ADUNA_BASE/OpenRDF Sesame/logs" $DIR/sesame-logs
+fi
+
+
+echo Waiting for jstat to finish
+wait $jstat_pid
+
+echo You can find the collected data in $DIR

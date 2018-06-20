@@ -1,0 +1,14 @@
+This is an implementation of a Sail graph using the Blueprints API and GraphDB.
+It can be used to access GraphDB through the Gremlin Query language.
+
+To install and use follow these steps:
+
+1. Download Gremlin 2.6.0 from https://github.com/tinkerpop/gremlin/wiki/Downloads.
+2. Unzip the file gremlin-groovy-2.6.0.zip into a convenient location.
+3. Go to the newly extracted folder, e.g. my_files/gremlin-groovy-2.6.0.
+3. Put the file graphdb-blueprints-rdf.jar into the lib subfolder.
+4. Run the Gremlin console by executing bin/gremlin.sh or bin/gremlin.bat.
+5. Connect to a GraphDB repository by executing one of the following:
+   g = new com.ontotext.blueprints.GraphDBSailGraph("<URL to a GraphDB repository>")
+       or
+   g = new com.ontotext.blueprints.GraphDBSailGraph("<URL to a GraphDB repository>", "<username>", "<password>")

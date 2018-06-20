@@ -8,7 +8,7 @@ MAINTAINER Jan Stoffregen "jan.stoffregen@uzh.ch"
 RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install -y curl
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 RUN apt-get install -y nodejs
 RUN npm install -g @angular/cli
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -

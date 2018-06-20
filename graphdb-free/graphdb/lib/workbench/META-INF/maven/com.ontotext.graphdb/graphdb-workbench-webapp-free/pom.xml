@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <name>GraphDB Workbench Webapplication Free</name>
+    <artifactId>graphdb-workbench-webapp-free</artifactId>
+    <packaging>war</packaging>
+    <parent>
+        <artifactId>graphdb-workbench-webapp-parent</artifactId>
+        <groupId>com.ontotext.graphdb</groupId>
+        <version>8.2.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <description>This artifact is the web application itself. It is supposed to be deployed in a servlet container.
+    </description>
+    <properties>
+        <graphdb.dist.title>standard</graphdb.dist.title>
+        <graphdb.folder.title>se</graphdb.folder.title>
+        <skip.minify>true</skip.minify>
+        <minify.source.dir>${project.build.directory}/../../src/main/resources</minify.source.dir>
+    </properties>
+    <licenses>
+        <license>
+            <name>Ontotext License, Version 1.0</name>
+            <url>http://www.ontotext.com</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <dependencies>
+        <dependency>
+            <groupId>com.ontotext.graphdb</groupId>
+            <artifactId>graphdb-free-runtime</artifactId>
+        </dependency>
+    </dependencies>
+    <build>
+        <resources>
+            <resource>
+                <directory>${basedir}/../src/main/resources</directory>
+                <excludes>
+                    <exclude>js-version.txt</exclude>
+                </excludes>
+                <filtering>false</filtering>
+            </resource>
+            <!-- Sets the version for URIs to JavaScript files. See GDB-1763 -->
+            <resource>
+                <directory>${basedir}/../src/main/resources</directory>
+                <includes>
+                    <include>js-version.txt</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+            </resource>
+        </resources>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>2.18.1</version>
+                    <executions>
+                        <execution>
+                            <id>integration-test</id>
+                            <goals>
+                                <goal>integration-test</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>verify</id>
+                            <goals>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.lesscss</groupId>
+                <artifactId>lesscss-maven-plugin</artifactId>
+                <configuration>
+                    <skip>false</skip>
+                    <sourceDirectory>${basedir}/../src/main/resources/META-INF/resources/less</sourceDirectory>
+                    <outputDirectory>${project.build.directory}/classes/META-INF/resources/css</outputDirectory>
+                    <compress>true</compress>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+            </plugin>
+            <!-- Minify must come before antrun as both modify the resources in target at phase process-resources
+                but minify will make a fresh copy form src and overwrite any previous changes. -->
+            <plugin>
+                <groupId>com.samaxes.maven</groupId>
+                <artifactId>minify-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
