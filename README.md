@@ -9,13 +9,7 @@
 	 - 	Mac: Go to Docker > Preferences > Advanced
 	 - If images stop running without an explanation, you might need to increase the memory a little bit more.
 
-### Deployment alternatives
-You can find two alternatives here to perform the deployment.
-
-1. Fast and recommended alternative: Go to the stable - releases - Folder and follow the instructions in this readme below. This alternative will pull all images from Dockerhub and get them up and running.
-2. Slow alternative: To be sure to get the latest version of all parts of the software, you can built all images "from scratch" on your machine as well. Stay in the current directory and follow the instructions below.
-
-#### 1. Fast and recommended alternative, download docker - images from docker - hub
+### 1. Fast and recommended quickstart - choice, download docker - images from docker - hub
  - git clone https://github.com/nie-ine/suite-quickstart.git
  - Map the name sipi to the ip address of localhost. e.g. next to localhost the name sipi should be mapped to the same ip adress as localhost. 
  <pre>sudo vi /etc/hosts</pre> 
@@ -25,7 +19,7 @@ You can find two alternatives here to perform the deployment.
  - cd to stable-releases/<latest-release> and run docker-compose up. This will start all parts of the software - suite.
  
  
-#### 2. Slow alternative, built docker - images from scratch
+### 2. Slow quickstart - choice, built docker - images locally from scratch
 - git clone --recursive https://github.com/nie-ine/suite-quickstart.git
 - map sipi to the localhost - ip as described in the fast alternative
 - Check out latest Knora version in the submodule https://stackoverflow.com/questions/5828324/update-git-submodule-to-latest-commit-on-origin/5828396#5828396
