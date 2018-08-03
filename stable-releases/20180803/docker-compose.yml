@@ -20,7 +20,7 @@ services:
       - graphdb
     volumes:
       - $HOME:$HOME
-      - ../tmp/webapi_tmp:/tmp/webapi_tmp/
+      - ../../Knora/tmp/webapi_tmp:/tmp/webapi_tmp/
       - ../../Knora/application.conf:/webapi/config/application.conf
     environment:
       - VIRTUAL_HOST=knora.localhost
@@ -33,7 +33,7 @@ services:
       - ../tmp:/tmp
       - $HOME:$HOME
       - ../../Sipi/images:/sipi/images
-      - ../sipiConfig:/sipi/config
+      - ../../Sipi/sipiConfig:/sipi/config
     environment:
       - VIRTUAL_HOST=sipi.localhost
 
