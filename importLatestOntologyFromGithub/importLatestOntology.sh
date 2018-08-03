@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-git clone --depth=1 https://github.com/dhlab-basel/Knora.git  || true
-git clone --depth=1 https://github.com/nie-ine/Ontologies.git  || true
+# git clone --depth=1 https://github.com/dhlab-basel/Knora.git  || true
+# git clone --depth=1 https://github.com/nie-ine/Ontologies.git  || true
 
 # Copy admin data
 cp -fr ./Ontologies/NIE_Knora_ontology-dependency/admin-data.ttl ./Knora/webapi/_test_data/all_data/

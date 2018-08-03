@@ -2,7 +2,7 @@ version: "3"
 
 services:
   graphdb:
-    build: ./graphdb-free
+    image: dhlabbasel/graphdb-free
     ports:
       - 7200:7200
     depends_on:
@@ -17,7 +17,7 @@ services:
     depends_on:
       - graphdb
     volumes:
-      - ./Knora/webapi/src/main:/Knora/webapi/src/main
+      - ./Knora/application.conf:/webapi/config/application.conf
       - ./tmp:/tmp
 
   sipi:
@@ -28,7 +28,7 @@ services:
       - ./tmp:/tmp
       - $HOME:$HOME
       - ./Sipi/images:/sipi/images
-      - ./Prebuiltimages/sipiConfig:/sipi/config
+      - ./stable-releases/sipiConfig:/sipi/config
 
   salsah:
     build: ./Salsah

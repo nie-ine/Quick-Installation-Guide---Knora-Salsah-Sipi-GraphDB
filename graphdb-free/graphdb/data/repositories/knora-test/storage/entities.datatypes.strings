@@ -8,4 +8,7 @@ fr
 it
 http://www.w3.org/2001/XMLSchema#dateTimeStamp
 http://www.w3.org/2001/XMLSchema#integer
+http://www.w3.org/2001/XMLSchema#int
+http://www.w3.org/2001/XMLSchema#decimal
+http://www.w3.org/2001/XMLSchema#anyURI
 la

@@ -1,1 +1,0 @@
-This folder is necessary for the bulk import.
