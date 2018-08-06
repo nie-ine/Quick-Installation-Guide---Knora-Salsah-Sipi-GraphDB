@@ -17,13 +17,13 @@
  <pre>127.0.0.1 localhost</pre>
  <pre>127.0.0.1 sipi</pre>
  - cd to stable-releases/```<latest-release>``` and run docker-compose up. This will start all parts of the software - suite.
- - You might have to restart Knora manually, since graphdb might take to long to start. After graphdb is ready ( it will say ```Started GraphDB in workbench mode at port 7200``` you restart Knora with the following command: ```docker restart <container id>```. You can find the container id by typing ```docker ps```.
+ - You might have to restart Knora manually, since graphdb might take too long to start. After graphdb is ready ( it will say ```Started GraphDB in workbench mode at port 7200``` you restart Knora with the following command: ```docker restart <container id>```. You can find the container id by typing ```docker ps```.
  
  
 ### 2. Slow quickstart - choice, built docker - images locally from scratch
 - git clone --recursive https://github.com/nie-ine/suite-quickstart.git
 - map sipi to the localhost - ip as described in the fast alternative
-- Check out latest Knora version in the submodule https://stackoverflow.com/questions/5828324/update-git-submodule-to-latest-commit-on-origin/5828396#5828396
+- Git clone Knora in the folder Knora
 - Change hostname for graphdb to "graphdb" and sipi to "sipi", both are localhost before this change. In Knora/Knora/webapi/src/main/resources/application.conf
 - docker-compose up in the main directory
 
