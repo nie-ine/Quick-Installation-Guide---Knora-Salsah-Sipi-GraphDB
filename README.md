@@ -16,7 +16,7 @@
  The file should contain the following lines after you added the second line:
  <pre>127.0.0.1 localhost</pre>
  <pre>127.0.0.1 sipi</pre>
- - cd to stable-releases/<latest-release> and run docker-compose up. This will start all parts of the software - suite.
+ - cd to stable-releases/```<latest-release>``` and run docker-compose up. This will start all parts of the software - suite.
  - You might have to restart Knora manually, since graphdb might take to long to start. After graphdb is ready ( it will say ```Started GraphDB in workbench mode at port 7200``` you restart Knora with the following command: ```docker restart <container id>```. You can find the container id by typing ```docker ps```.
  
  
