@@ -25,14 +25,30 @@
   
     This will start all parts of the software-suite via Docker.
   
- - You might have to restart Knora manually, since GraphDB might take too long to start. After GraphDB is ready (it will say ```Started GraphDB in workbench mode at port 7200```) you restart Knora with the following command:
+ - You might have to restart Knora manually, since GraphDB might take too long to start. After GraphDB is ready (it will say ```Started GraphDB in workbench mode at port 7200```), open another terminal and restart Knora with the following command:
  
     ```
     docker restart <containerIDforKnora>
     ``` 
  
     You can find the ```containerIDforKnora``` by typing ```docker ps```.
+    
+    Knora is running when you see the message: ```Knora API Server started at http://0.0.0.0:3333```
  
+ - Open the application you need in your browser by typing:
+    
+    ```
+    localhost:<port>
+    ```
+    
+    The port numbers are:
+    
+    - NIE-INE OS: 1234
+    - Salsah: 4200
+    - Knora: 3333
+    - GraphDB: 7200
+    - Sipi: 1024
+    
  
 ### 2. Slow quickstart-choice, built docker-images locally from scratch
 - Clone the repository:
