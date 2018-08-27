@@ -1,5 +1,5 @@
-## Quickstart for the software-suite consisting of
-#### nieOS, nieOntologies with the DaSCH-stack (Knora, Salsah, Sipi and GraphDB) 
+## Quickstart for the NIE-INE software-suite 
+#### Consisting of nieOS & nieOntologies with the DaSCH-stack (Knora, Salsah, Sipi and GraphDB) 
 
 ### Prerequisites:
  - Install Docker. If you use a Linux distribution, you might have to install docker-compose as well.
@@ -10,23 +10,36 @@
 	 - If images stop running without an explanation, you might need to increase the memory a little bit more.
 
 ### 1. Fast and recommended quickstart-choice, download docker-images from docker-hub
- - Clone the repository
- <pre>git clone git@github.com:nie-ine/suite-quickstart.git</pre>
+ - Clone the repository:
+    <pre>git clone git@github.com:nie-ine/suite-quickstart.git</pre>
  - Map the name "sipi" to the ip address of localhost, e.g. next to localhost the name "sipi" should be mapped to the same ip adress as localhost:
- <pre>sudo vi /etc/hosts</pre> 
- The file should contain the following lines after you added the second line:
- <pre>127.0.0.1 localhost</pre>
- <pre>127.0.0.1 sipi</pre>
- - change directory to ```/stable-releases/<latest-release>``` and run ```docker-compose up```. This will start all parts of the software-suite.
- - You might have to restart Knora manually, since GraphDB might take too long to start. After GraphDB is ready (it will say ```Started GraphDB in workbench mode at port 7200```) you restart Knora with the following command: 
- ```docker restart <containerID>```. You can find the ```containerID``` by typing ```docker ps```.
+    <pre>sudo vi /etc/hosts</pre> 
+    The file should contain the following lines after you added the second line:
+    <pre>127.0.0.1 localhost</pre>
+    <pre>127.0.0.1 sipi</pre>
+ - Change directory to ```/stable-releases/<latest-release>``` and run:
+  
+    ```
+    docker-compose up
+    ```
+  
+    This will start all parts of the software-suite via Docker.
+  
+ - You might have to restart Knora manually, since GraphDB might take too long to start. After GraphDB is ready (it will say ```Started GraphDB in workbench mode at port 7200```) you restart Knora with the following command:
+ 
+    ```
+    docker restart <containerIDforKnora>
+    ``` 
+ 
+    You can find the ```containerIDforKnora``` by typing ```docker ps```.
  
  
 ### 2. Slow quickstart-choice, built docker-images locally from scratch
-- git clone --recursive git@github.com:nie-ine/suite-quickstart.git
+- Clone the repository:
+   <pre>git clone --recursive git@github.com:nie-ine/suite-quickstart.git</pre>
 - map Sipi to the localhost-ip as described in the fast alternative
 - Git clone Knora in the folder ```/Knora```
-- Change hostname for GraphDB to "graphdb" and Sipi to "sipi", both are localhost before this change. In Knora/Knora/webapi/src/main/resources/application.conf
+- Change hostname for GraphDB to "graphdb" and Sipi to "sipi" in ```/Knora/Knora/webapi/src/main/resources/application.conf``` (both are localhost before this change)
 - run ```docker-compose up``` in the main directory
 
 ### Test your suite
@@ -34,7 +47,7 @@ Change the label in the python script on line 10 to an individual name. To execu
 
 <pre>pip3 install requests</pre> 
 
-Execute the script.
+Execute the script:
 
 <pre>python3 import.py</pre> 
 
@@ -43,10 +56,10 @@ If you get a json with the resource description back from Knora after executing 
 
 ### If you would like to import your own ontology
  - Execute your import-script that you use with Knora, just like you would import ontologies to a running Knora-instance
- - Restart Knora. Run ```docker ps``` to find container-id of Knora-container. ```docker restart <containerID>``` to restart Knora, so that Knora runs through your imported ontology
+ - Restart Knora. Run ```docker ps``` to find containerID of the Knora-container. Then type ```docker restart <containerIDforKnora>``` to restart Knora, so that Knora runs through your imported ontology
 
 
 ### If you would like to stop the containers:
 
- - If you press ```ctrl+c``` twice, Docker will force containers to stop, the containers wont be deleted though. Since the imported data for the triple store is not saved persistently yet, this option saves the data in the container as well.
+ - If you press ```ctrl+c``` twice, Docker will force containers to stop, the containers won't be deleted though. Since the imported data for the triple store is not saved persistently yet, this option saves the data in the container as well.
  - ```docker-compose down``` stops and deletes all containers.
