@@ -4,7 +4,7 @@
 ### Prerequisites:
  - Install Docker. If you use a Linux distribution, you might have to install docker-compose as well.
  - You need to have 20GB of free storage
- - You might need to install "expect" for step 5. Check if you have it installed: <pre>expect -v</pre>
+ - You might need to install "expect" because of the Knora import scripts. Check if you have it installed: <pre>expect -v</pre>
  - If you use Mac OS X: Increase Memory and CPUs that Docker is allowed to use. It works with 10 GB, maybe less as well.
 	 - 	Mac: Go to Docker > Preferences > Advanced
 	 - If images stop running without an explanation, you might need to increase the memory a little bit more.
