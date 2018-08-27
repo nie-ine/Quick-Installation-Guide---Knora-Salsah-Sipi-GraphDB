@@ -21,7 +21,7 @@ services:
       - ./tmp:/tmp
 
   sipi:
-    image: nieine/sipi
+    image: dhlabbasel/sipi
     ports:
       - 1024:1024
     volumes:
