@@ -1,0 +1,39 @@
+version: "3"
+
+services:
+  graphdb:
+    image: dhlabbasel/graphdb-free
+    ports:
+    - 7200:7200
+    depends_on:
+    - salsah
+    volumes:
+    - ../../graphdb-free/graphdb:/graphdb
+
+  knora:
+    image: nieine/knora:b12b83e
+    ports:
+    - 3333:3333
+    depends_on:
+    - graphdb
+    volumes:
+    - ../../tmp/webapi_tmp:/tmp/webapi_tmp/
+
+  sipi:
+    image: nieine/sipi:20180828
+    ports:
+     - "1024:1024"
+    volumes:
+     - ../../Sipi/sipi/config:/sipi/config
+     - ../../Sipi/sipi/scripts:/sipi/scripts
+     - ../../tmp:/tmp
+     - $HOME:$HOME
+     - ../../Sipi/sipi/images:/sipi/images
+     - ../../Sipi/sipi/server:/sipi/server
+    restart: unless-stopped
+    command: --config=/sipi/config/sipi.knora-docker-it-config.lua
+
+  salsah:
+    image: nieine/salsah:2de55f5
+    ports:
+    - 4200:4200
