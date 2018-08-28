@@ -15,4 +15,4 @@ cp -fr ./Ontologies/NIE_Knora_ontology-dependency/graphdb-knora-test-data.expect
 # Copy NIE-INE Ontologies
 cp  -R ./Ontologies/nie-ontologies/. ./Knora/webapi/_test_data/ontologies/
 
-cd Knora/webapi/scripts/ && ./graphdb-free-init-knora-test.sh && cd ../../..
+cd Knora/webapi/scripts/ && ./graphdb-free-docker-init-knora-test.sh && cd ../../..
