@@ -21,14 +21,19 @@ services:
       - ./tmp:/tmp
 
   sipi:
-    image: dhlabbasel/sipi
+    image: dhlabbasel/sipi:develop
+    container_name: sipi
     ports:
-      - 1024:1024
+      - "1024:1024"
     volumes:
+      - ./Sipi/sipi/config:/sipi/config
+      - ./Sipi/sipi/scripts:/sipi/scripts
       - ./tmp:/tmp
       - $HOME:$HOME
-      - ./Sipi/images:/sipi/images
-      - ./stable-releases/sipiConfig:/sipi/config
+      - ./Sipi/sipi/images:/sipi/images
+      - ./Sipi/sipi/server:/sipi/server
+    restart: unless-stopped
+    command: --config=/sipi/config/sipi.knora-docker-it-config.lua
 
   salsah:
     build: ./Salsah
