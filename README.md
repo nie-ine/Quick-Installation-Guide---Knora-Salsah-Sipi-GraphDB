@@ -52,7 +52,7 @@
  
 ### 2. Slow quickstart-choice, built docker-images locally from scratch
 - Clone the repository:
-   <pre>git clone --recursive git@github.com:nie-ine/suite-quickstart.git</pre>
+   <pre>git clone git@github.com:nie-ine/suite-quickstart.git</pre>
 - map Sipi to the localhost-ip as described in the fast alternative
 - Git clone Knora in the folder ```/Knora```
 - Change hostname for GraphDB to "graphdb" and Sipi to "sipi" in ```/Knora/Knora/webapi/src/main/resources/application.conf``` (both are localhost before this change)
