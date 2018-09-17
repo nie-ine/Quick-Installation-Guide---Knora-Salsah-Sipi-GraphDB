@@ -55,7 +55,7 @@
    <pre>git clone git@github.com:nie-ine/suite-quickstart.git</pre>
 - map Sipi to the localhost-ip as described in the fast alternative
 - Git clone Knora in the folder ```/Knora```
-- If applicaction.conf of Knora has changed: Change hostname for GraphDB to "graphdb" and Sipi to "sipi" in ```/Knora/Knora/webapi/src/main/resources/application.conf``` (both are localhost before this change) and replace it in the suite-quickstart/Knora folder.
+- If the application.conf of Knora has changed in the latest version: Change hostname for GraphDB to "graphdb" and Sipi to "sipi" in ```/Knora/Knora/webapi/src/main/resources/application.conf``` (both are localhost before this change). Knora uses the application.conf outside of the container which has to be thus up to date. If it has changed, you have to replace the application.conf in this directory.
 - run ```docker-compose up``` in the main directory
 
 ### Test your suite
