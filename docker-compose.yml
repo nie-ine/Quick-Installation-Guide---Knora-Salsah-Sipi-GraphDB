@@ -11,14 +11,18 @@ services:
       - ./graphdb-free/graphdb:/graphdb
 
   knora:
-    build: ./Knora/Knora/webapi
+    image: dhlabbasel/webapi:3.0.0
     ports:
       - 3333:3333
     depends_on:
       - graphdb
     volumes:
-      - ./Knora/application.conf:/webapi/config/application.conf
+     # - ./Knora/application.conf:/webapi/config/application.conf
       - ./tmp:/tmp
+    environment:
+    - KNORA_WEBAPI_TRIPLESTORE_HOST=graphdb
+    - KNORA_WEBAPI_SIPI_INTERNAL_HOST=sipi
+    - KNORA_WEBAPI_TRIPLESTORE_DBTYPE=graphdb-free
 
   sipi:
     image: dhlabbasel/sipi:develop
@@ -39,3 +43,26 @@ services:
     build: ./Salsah
     ports:
       - 4200:4200
+
+  #nieos:
+  #  build: ./NIE-OS
+  #  ports:
+  #  - 4300:4200
+  #  entrypoint: ng s --host 0.0.0.0 --disable-host-check
+  #  environment:
+  #  - VIRTUAL_HOST=nieos.localhost
+
+  #node:
+  #  build: ./NIE-OS
+  #  ports:
+  #  - 4000:3000
+  #  entrypoint: npm run start:server
+  #    environment:
+  #    - VIRTUAL_HOST=node.localhost
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+    - "80:80"
+    volumes:
+    - /var/run/docker.sock:/tmp/docker.sock:ro
