@@ -24,3 +24,4 @@ native
 *.toc
 *.bak
 idea.vmoptions
+/NIE-OS/nieOS/backend/.settings
