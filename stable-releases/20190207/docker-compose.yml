@@ -11,7 +11,7 @@ services:
       - ../../graphdb-free/graphdb:/graphdb
 
   knora:
-    image: dhlabbasel/webapi:4.0.0
+    image: nieine/knora:5-fix
     ports:
       - 3333:3333
     depends_on:
