@@ -18,4 +18,4 @@ cp -fr ./Ontologies-shared/NIE_Knora_ontology-dependency_shared/graphdb-free-kno
 # Copy NIE-INE Ontologies
 cp  -R ./Ontologies-shared/nie-ontologies_shared/. ./Knora/webapi/_test_data/ontologies/
 
-cd Knora/webapi/scripts/ && ./graphdb-free-docker-init-knora-test.sh && cd ../../..do ker
+cd Knora/webapi/scripts/ && ./graphdb-free-docker-init-knora-test.sh && cd ../../..
