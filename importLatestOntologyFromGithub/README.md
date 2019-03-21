@@ -3,7 +3,7 @@
 To import NIE-INE Ontologies, just follow the following steps:
 
 * from the main folder change to the folder *importLatestOntologyForGithub*
-* execute *importLatesteOntology.sh*, which downloads the current version of NIE-INE shared Ontologies und upload them into the triplestore
+* execute *importLatesteOntology.sh*, which downloads the current version of [NIE-INE shared Ontologies](https://github.com/nie-ine/Ontologies-shared) und upload them into the triplestore
 * restart Knora
 
 ```
