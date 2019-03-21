@@ -1,6 +1,6 @@
-# How to import NIE-INE shared Ontologies
+# How to import NIE-INE Ontologies
 
-To import NIE-INE shared Ontologies, just follow the following steps:
+To import NIE-INE Ontologies, just follow the following steps:
 
 * from the main folder change to the folder *importLatestOntologyForGithub*
 * execute *importLatesteOntology.sh*, which downloads the current version of NIE-INE shared Ontologies und upload them into the triplestore
