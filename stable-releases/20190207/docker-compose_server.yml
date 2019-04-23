@@ -1,0 +1,82 @@
+version: "3"
+
+services:
+  # graphdb-se is running separately,
+  # therefore we don't need this section
+  # graphdb:
+  #   image: dhlabbasel/graphdb-free
+  #   ports:
+  #     - 7200:7200
+  #   depends_on:
+  #     - salsah
+  #   volumes:
+  #     - ../../graphdb-free/graphdb:/graphdb
+
+  knora:
+    image: nieine/knora:5-fix
+    ports:
+      - 3333:3333
+      - 10001:10001
+    volumes:
+      - ../../tmp:/tmp
+    environment:
+    - VIRTUAL_HOST=knora2.nie-ine.ch
+    - VIRTUAL_PORT=3333
+    - KNORA_WEBAPI_TRIPLESTORE_HOST=131.152.128.171 # IP-Address graphDB server
+    - KNORA_WEBAPI_SIPI_INTERNAL_HOST=sipi
+    - KNORA_WEBAPI_TRIPLESTORE_DBTYPE=graphdb-se
+
+  sipi:
+    image: dhlabbasel/sipi:knora-v5.0.0
+    container_name: sipi
+    ports:
+      - "1024:1024"
+    volumes:
+      - ../../Sipi/sipi/config:/sipi/config
+      - ../../Sipi/sipi/scripts:/sipi/scripts
+      - ../../tmp:/tmp
+      - $HOME:$HOME
+      - ../../Sipi/sipi/images:/sipi/images
+      - ../../Sipi/sipi/server:/sipi/server
+    environment:
+     - VIRTUAL_HOST=sipi2.nie-ine.ch
+    restart: unless-stopped
+    command: --config=/sipi/config/sipi.knora-docker-it-config.lua
+
+  salsah:
+    image: nieine/salsah:2de55f5
+    ports:
+      - 4200:4200
+    volumes:
+      - ../../Salsah/environment.ts:/Salsah/src/environments/environment.ts
+    environment:
+      - VIRTUAL_HOST=salsah2.nie-ine.ch
+    command: ng serve --host 0.0.0.0 --disable-host-check
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+    - "80:80"
+    volumes:
+    - ../../nginx/vhost.d:/etc/nginx/vhost.d:ro
+    - /var/run/docker.sock:/tmp/docker.sock:ro
+
+  nie-os:
+    image: nieine/nieos:2019-03-v3
+    ports:
+      - 90:80
+    volumes:
+    - ../../nie-os/nginx/conf.d:/etc/nginx/conf.d
+    environment:
+      - NGINX_HOST=test-nieos.nie-ine.ch
+      - VIRTUAL_HOST=test-nieos.nie-ine.ch
+
+  node:
+    image: nieine/mean:2019-04-v2
+    entrypoint: npm run start:server
+    ports:
+    - 3000:3000
+    environment:
+    - VIRTUAL_HOST=node.nie-ine.ch
+    volumes:
+    - ../../node/nieOS/backend/.settings:/nieOS/backend/.settings
