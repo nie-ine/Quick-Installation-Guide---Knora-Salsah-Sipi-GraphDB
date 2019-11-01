@@ -43,6 +43,18 @@ services:
     image: nieine/salsah:2de55f5
     ports:
       - 4200:4200
+   fuseki:
+   image: nieine/fuseki:2019-10-31v2
+   entrypoint: ./fuseki-server
+   environment:
+     - FUSEKI_HOME=/apache-jena-fuseki-3.13.1/
+   ports:
+     - 3030:3030 # external:internal
+   volumes:
+     - ../../fuseki/apache-jena-fuseki-3.13.1/run:/apache-jena-fuseki-3.13.1/run
+     - ../../fuseki/apache-jena-fuseki-3.13.1/tdb-data:/apache-jena-fuseki-3.13.1/tdb-data
+
+
 
   #nieos:
   #  build: ./NIE-OS
