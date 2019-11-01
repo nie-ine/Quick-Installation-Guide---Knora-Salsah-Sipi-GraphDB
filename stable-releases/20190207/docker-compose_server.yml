@@ -83,6 +83,21 @@ services:
     volumes:
     - ./nieOS/src/environments:/nieOS/src/environments
 
+  fuseki:
+   image: nieine/fuseki:2019-10-31v2
+   entrypoint: ./fuseki-server
+   environment:
+     - FUSEKI_HOME=/apache-jena-fuseki-3.13.1/
+   ports:
+     - 3030:3030 # external:internal
+   volumes:
+     - ../../fuseki/apache-jena-fuseki-3.13.1/run:/apache-jena-fuseki-3.13.1/run
+     - ../../fuseki/apache-jena-fuseki-3.13.1/tdb-data:/apache-jena-fuseki-3.13.1/tdb-data
+   environment:
+     - NGINX_HOST=fuseki.nie-ine.ch
+     - VIRTUAL_HOST=fuseki.nie-ine.ch
+
+
 #  node:
 #    image: nieine/mean:latest
 #    ports:
