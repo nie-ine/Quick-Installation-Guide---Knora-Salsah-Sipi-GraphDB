@@ -1,0 +1,110 @@
+PREFIX tln:     <http://nie-ine.org/projects/nietzsche>
+PREFIX fuseki:  <http://jena.apache.org/fuseki#>
+PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX tdb2:    <http://jena.apache.org/2016/tdb#>
+PREFIX ja:      <http://jena.hpl.hp.com/2005/11/Assembler#>
+PREFIX perm:    <http://apache.org/jena/permissions/Assembler#>
+
+
+##
+## Load the SecuredAssembler class from the permissions library and define 
+## the perm:Model as a subclass of ja:NamedModel.
+##
+[] ja:loadClass    "org.apache.jena.permissions.SecuredAssembler" .
+perm:Model       rdfs:subClassOf  ja:NamedModel .
+
+##
+## Define the base model that contains the unsecured data.
+##
+tln:baseModel rdf:type tdb2:DatasetTDB2 ;
+    tdb2:location "tdb-data/nietzsche-data"
+    .   
+
+##
+## Define the secured model.  This is where permissions is applied to the 
+## tln:baseModel to create a model that has permission restrictions.  Note 
+## that it is using the security evaluator implementation (perm:evaluatorImpl) 
+## called tln:secEvaluator which we will define next.
+##
+
+tln:securedModel rdf:type perm:Model ;
+    perm:baseModel tln:baseModel ;
+    ja:modelName "https://nie-ine.org/nietzsche/securedModel" ;
+    perm:evaluatorImpl tln:secEvaluator .
+  
+##
+## Define the security evaluator.  This is where we use the example 
+## ShiroExampleEvaluator.  For your production environment you will replace 
+## "org.apache.jena.permissions.example.ShiroExampleEvaluator"  with your 
+## SecurityEvaluator implementation.  Note that  ShiroExampleEvaluator constructor 
+## takes a Model argument.  We pass in the unsecured baseModel so that the evaluator 
+## can read it unencumbered.  Your implementation of SecurityEvaluator may have different 
+## parameters to meet your specific needs.
+## 
+
+tln:secEvaluator rdf:type perm:Evaluator ;
+    perm:args [  
+        rdf:_1 tln:baseModel ;
+    ] ;
+    perm:evaluatorClass "org.apache.jena.permissions.example.ShiroExampleEvaluator" .
+
+##
+## Define the dataset that we will use for in the server.
+## Here we will define THE PERSISTENT STORAGE IN THE GIVEN location. 
+## tdb2:location "tdb-data/nietzsche-data" will create the directory ./tdb-data/nietzsche-data/ and where all triples are stored persistently
+##
+
+tln:persistent_dataset rdf:type tdb2:DatasetTDB2 ;
+    tdb2:location "tdb-data/nietzsche-data" ;
+    ja:defaultGraph tln:securedModel;
+   .
+
+##
+## Define the fuseki:Server.
+##
+##
+## with time outs:
+## Format 1: "1000" -- 1 second timeout
+## Format 2: "10000,60000" -- 10s timeout to first result, then 60s timeout to for rest of query.
+
+tln:fuseki rdf:type fuseki:Server ;
+    ja:context [ 
+                ja:cxtName "arq:queryTimeout" ; 
+                ja:cxtValue "30000,60000" ] ;
+   fuseki:services (
+      tln:dataService
+      tln:readOnlyService
+   ) .
+
+## DEFINING THE DATA SERVICES AND THE ENDPOINTS
+## Define the service for the fuseki:Service.  Note that the fuseki:dataset served by 
+## this server is the secured dataset defined above.    
+## 
+
+tln:dataService rdf:type fuseki:Service ;
+    rdfs:label                      "TDB2 Service for Nietzsche (RW)" ;
+    fuseki:name                     "nietzsche-rw" ; # The url of the endpoint: http://host:port/nietzsche-rw
+    fuseki:serviceQuery             "query" ;
+    fuseki:serviceQuery             "sparql" ;
+    fuseki:serviceUpdate            "update" ;
+    fuseki:serviceUpload            "upload" ;
+    fuseki:serviceReadWriteGraphStore      "data" ;
+    # A separate read-only graph store endpoint:
+    #fuseki:serviceReadGraphStore       "get" ;
+    fuseki:dataset           tln:persistent_dataset ;
+    .
+
+##
+## The separate read only endpoint to the Nietzsche data. It is consuming the same tln:persistent_dataset, but has no restrictions 
+## in shiro.ini, so no credentials needed to access.
+## allowed are only the following options: query, get
+##
+
+tln:readOnlyService rdf:type fuseki:Service ;
+    rdfs:label                      "TDB2 readOnly service for the nietzsche project" ;
+    fuseki:name                     "nietzsche" ; # The url of the endpoint: http://host:port/nietzsche
+    fuseki:serviceQuery             "query" ;
+    fuseki:serviceReadGraphStore    "get" ;
+    fuseki:dataset                  tln:persistent_dataset ;
+    .
