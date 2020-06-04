@@ -8,39 +8,50 @@ PREFIX perm:    <http://apache.org/jena/permissions/Assembler#>
 
 
 ##
-## Load the SecuredAssembler class from the permissions library and define 
-## the perm:Model as a subclass of ja:NamedModel.
+## Define the one dataset that will be used to store the data. 
+## Here the persistent tdb2 and its location is defined. 
+## tdb2:location "/nietzsche-database" will create the directory ./run/databases/ and 
+## where all triples are stored persistently. Every models base is that dataset.
 ##
-[] ja:loadClass    "org.apache.jena.permissions.SecuredAssembler" .
-perm:Model       rdfs:subClassOf  ja:NamedModel .
+
+tln:nietzsche_dataset rdf:type tdb2:DatasetTDB2 ;
+    tdb2:location "run/databases/nietzsche-database" ;
+    ja:defaultGraph tln:securedModel;
+   .
 
 ##
-## Define the base model that contains the unsecured data.
+## Define the base model that contains the unsecured data, on which the secured model with 
+## permissioning base upon.
 ##
+
 tln:baseModel rdf:type tdb2:DatasetTDB2 ;
-    tdb2:location "tdb-data/nietzsche-data"
+    tdb2:location "run/databases/nietzsche-database"
     .   
 
 ##
-## Define the secured model.  This is where permissions is applied to the 
-## tln:baseModel to create a model that has permission restrictions.  Note 
-## that it is using the security evaluator implementation (perm:evaluatorImpl) 
-## called tln:secEvaluator which we will define next.
+## Definition of the secured model: This is where permissions are applied to the 
+## tln:baseModel. Note that it is using the security evaluator implementation (perm:evaluatorImpl) 
+## called tln:secEvaluator which is defined next.
 ##
 
 tln:securedModel rdf:type perm:Model ;
     perm:baseModel tln:baseModel ;
     ja:modelName "https://nie-ine.org/nietzsche/securedModel" ;
     perm:evaluatorImpl tln:secEvaluator .
-  
+
 ##
-## Define the security evaluator.  This is where we use the example 
-## ShiroExampleEvaluator.  For your production environment you will replace 
-## "org.apache.jena.permissions.example.ShiroExampleEvaluator"  with your 
-## SecurityEvaluator implementation.  Note that  ShiroExampleEvaluator constructor 
-## takes a Model argument.  We pass in the unsecured baseModel so that the evaluator 
-## can read it unencumbered.  Your implementation of SecurityEvaluator may have different 
-## parameters to meet your specific needs.
+## Load the SecuredAssembler class from the permissions library and define 
+## the perm:Model as a subclass of ja:NamedModel.
+##
+
+[] ja:loadClass    "org.apache.jena.permissions.SecuredAssembler" .
+perm:Model       rdfs:subClassOf  ja:NamedModel .
+
+##
+## Definition of the security evaluator.  This is where we use the example 
+## ShiroExampleEvaluator. Note that  ShiroExampleEvaluator constructor 
+## takes a Model argument. We pass in the unsecured baseModel so that the evaluator 
+## can read it unencumbered.
 ## 
 
 tln:secEvaluator rdf:type perm:Evaluator ;
@@ -49,20 +60,68 @@ tln:secEvaluator rdf:type perm:Evaluator ;
     ] ;
     perm:evaluatorClass "org.apache.jena.permissions.example.ShiroExampleEvaluator" .
 
+
 ##
-## Define the dataset that we will use for in the server.
-## Here we will define THE PERSISTENT STORAGE IN THE GIVEN location. 
-## tdb2:location "tdb-data/nietzsche-data" will create the directory ./tdb-data/nietzsche-data/ and where all triples are stored persistently
+## Definition of the graph for the inference on the nietzsche_dataset defined above. 
 ##
 
-tln:persistent_dataset rdf:type tdb2:DatasetTDB2 ;
-    tdb2:location "tdb-data/nietzsche-data" ;
-    ja:defaultGraph tln:securedModel;
-   .
+<inferenceGraph> rdf:type tdb2:GraphTDB ;
+    tdb2:dataset tln:nietzsche_dataset
+    .
+
+##
+## Definition of the inference model for basic reasoning. This model has the graph defined above as its baseModel. 
+## Besides the OWLFBRuleReasoner other reasoners can be added here as well ...
+##
+
+<inferenceModel> a ja:InfModel ;
+     ja:baseModel <inferenceGraph> ;
+     ja:reasoner [
+         ja:reasonerURL <http://jena.hpl.hp.com/2003/RDFSExptRuleReasoner>
+     ] .
+ 
+##
+## Definition of the dataset for inference. It is an ja:RDFDataset (not a tdb2:DatasetTDB2). 
+## Its defaultgraph is the graph defined above.
+##
+tln:inferedDataset a ja:RDFDataset ;
+    ja:defaultGraph       <inferenceModel> ;
+     .
+
+##
+## Definition of the read/write endpoint service
+##
+## Note that the fuseki:dataset used is the nietzsche_dataset which is defined as secured above. No inference and resoning here.    
+## 
+
+tln:dataService rdf:type fuseki:Service ;
+    rdfs:label                      "TDB2 Service for Nietzsche (RW)" ;
+    fuseki:name                     "nietzsche-rw" ; # The url of the endpoint: http://host:port/nietzsche-rw
+    fuseki:serviceQuery             "query" ;
+    fuseki:serviceQuery             "sparql" ;
+    fuseki:serviceUpdate            "update" ;
+    fuseki:serviceUpload            "upload" ;
+    fuseki:serviceReadWriteGraphStore      "data" ;
+    # A separate read-only graph store endpoint:
+    #fuseki:serviceReadGraphStore       "get" ;
+    fuseki:dataset           tln:nietzsche_dataset ;
+    .
+
+##
+## The separate read only endpoint to the Nietzsche data enabling inference/reasoning. It is consuming the tln:inferedDataset. 
+## To access this endpoint/dataset there are no credentials needed (its model is not a perm:Model and no url entries in shiro.ini)
+##
+
+tln:readOnlyService rdf:type fuseki:Service ;
+    rdfs:label                      "TDB2 readOnly service for the nietzsche project" ;
+    fuseki:name                     "nietzsche" ; # The url of the endpoint: http://host:port/nietzsche
+    fuseki:serviceQuery             "query" ;
+    fuseki:serviceReadGraphStore    "get" ;
+    fuseki:dataset                  tln:inferedDataset ;
+    .
 
 ##
 ## Define the fuseki:Server.
-##
 ##
 ## with time outs:
 ## Format 1: "1000" -- 1 second timeout
@@ -76,35 +135,3 @@ tln:fuseki rdf:type fuseki:Server ;
       tln:dataService
       tln:readOnlyService
    ) .
-
-## DEFINING THE DATA SERVICES AND THE ENDPOINTS
-## Define the service for the fuseki:Service.  Note that the fuseki:dataset served by 
-## this server is the secured dataset defined above.    
-## 
-
-tln:dataService rdf:type fuseki:Service ;
-    rdfs:label                      "TDB2 Service for Nietzsche (RW)" ;
-    fuseki:name                     "nietzsche-rw" ; # The url of the endpoint: http://host:port/nietzsche-rw
-    fuseki:serviceQuery             "query" ;
-    fuseki:serviceQuery             "sparql" ;
-    fuseki:serviceUpdate            "update" ;
-    fuseki:serviceUpload            "upload" ;
-    fuseki:serviceReadWriteGraphStore      "data" ;
-    # A separate read-only graph store endpoint:
-    #fuseki:serviceReadGraphStore       "get" ;
-    fuseki:dataset           tln:persistent_dataset ;
-    .
-
-##
-## The separate read only endpoint to the Nietzsche data. It is consuming the same tln:persistent_dataset, but has no restrictions 
-## in shiro.ini, so no credentials needed to access.
-## allowed are only the following options: query, get
-##
-
-tln:readOnlyService rdf:type fuseki:Service ;
-    rdfs:label                      "TDB2 readOnly service for the nietzsche project" ;
-    fuseki:name                     "nietzsche" ; # The url of the endpoint: http://host:port/nietzsche
-    fuseki:serviceQuery             "query" ;
-    fuseki:serviceReadGraphStore    "get" ;
-    fuseki:dataset                  tln:persistent_dataset ;
-    .

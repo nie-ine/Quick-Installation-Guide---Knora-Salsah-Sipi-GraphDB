@@ -1,0 +1,141 @@
+PREFIX wbn:     <http://nie-ine.org/projects/webern>
+PREFIX fuseki:  <http://jena.apache.org/fuseki#>
+PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX tdb2:    <http://jena.apache.org/2016/tdb#>
+PREFIX ja:      <http://jena.hpl.hp.com/2005/11/Assembler#>
+PREFIX perm:    <http://apache.org/jena/permissions/Assembler#>
+
+
+##
+## Define the dataset that will be used to store the data.
+## Here the persistent tdb2 and its location is defined. 
+## tdb2:location "tdb-data/webern-data" will create the directory ./tdb-data/webern-data/ and 
+## where all triples are stored persistently
+##
+
+wbn:persistent_dataset rdf:type tdb2:DatasetTDB2 ;
+    tdb2:location "run/databases/webern-database" ;
+    ja:defaultGraph wbn:securedModel;
+   .
+
+##
+## Define the base model that contains the unsecured data, on which the secured model with 
+## permissioning base upon.
+##
+
+wbn:baseModel rdf:type tdb2:DatasetTDB2 ;
+    tdb2:location "/webern-database"
+    .   
+
+##
+## Definition of the secured model: This is where permissions are applied to the 
+## wbn:baseModel. Note that it is using the security evaluator implementation (perm:evaluatorImpl) 
+## called wbn:secEvaluator which is defined next.
+##
+
+wbn:securedModel rdf:type perm:Model ;
+    perm:baseModel wbn:baseModel ;
+    ja:modelName "https://nie-ine.org/webern/securedModel" ;
+    perm:evaluatorImpl wbn:secEvaluator .
+
+##
+## Load the SecuredAssembler class from the permissions library and define 
+## the perm:Model as a subclass of ja:NamedModel.
+##
+
+[] ja:loadClass    "org.apache.jena.permissions.SecuredAssembler" .
+perm:Model       rdfs:subClassOf  ja:NamedModel .
+
+##
+## Definition of the security evaluator.  This is where we use the example 
+## ShiroExampleEvaluator.  For your production environment you will replace 
+## "org.apache.jena.permissions.example.ShiroExampleEvaluator"  with your 
+## SecurityEvaluator implementation.  Note that  ShiroExampleEvaluator constructor 
+## takes a Model argument.  We pass in the unsecured baseModel so that the evaluator 
+## can read it unencumbered.  Your implementation of SecurityEvaluator may have different 
+## parameters to meet your specific needs.
+## 
+
+wbn:secEvaluator rdf:type perm:Evaluator ;
+    perm:args [  
+        rdf:_1 wbn:baseModel ;
+    ] ;
+    perm:evaluatorClass "org.apache.jena.permissions.example.ShiroExampleEvaluator" .
+
+
+##
+## Definition of the graph for the inference on the persistent_dataset defined above. 
+##
+
+<inferenceGraph> rdf:type tdb2:GraphTDB ;
+    tdb2:dataset wbn:persistent_dataset
+    .
+
+##
+## Definition of the inference model for basic reasoning. This model has the graph defined above as its baseModel. 
+## Besides the OWLFBRuleReasoner other reasoners can be added here as well ...
+##
+
+<inferenceModel> a ja:InfModel ;
+     ja:baseModel <inferenceGraph> ;
+     ja:reasoner [
+         ja:reasonerURL <http://jena.hpl.hp.com/2003/RDFSExptRuleReasoner>
+     ] .
+ 
+##
+## Definition of the dataset for inference. It is an ja:RDFDataset (not a tdb2:DatasetTDB2). 
+## Its defaultgraph is the graph defined above.
+##
+wbn:inferedDataset a ja:RDFDataset ;
+    ja:defaultGraph       <inferenceModel> ;
+     .
+
+
+##
+## Definition of the read/write endpoint service
+##
+## Note that the fuseki:dataset used is the persistent_dataset which is defined as secured above. No inference and resoning here.    
+## 
+
+wbn:dataService rdf:type fuseki:Service ;
+    rdfs:label                      "TDB2 Service for Nietzsche (RW)" ;
+    fuseki:name                     "webern-rw" ; # The url of the endpoint: http://host:port/webern-rw
+    fuseki:serviceQuery             "query" ;
+    fuseki:serviceQuery             "sparql" ;
+    fuseki:serviceUpdate            "update" ;
+    fuseki:serviceUpload            "upload" ;
+    fuseki:serviceReadWriteGraphStore      "data" ;
+    # A separate read-only graph store endpoint:
+    #fuseki:serviceReadGraphStore       "get" ;
+    fuseki:dataset           wbn:persistent_dataset ;
+    .
+
+##
+## The separate read only endpoint to the Nietzsche data enabling inference/reasoning. It is consuming the wbn:inferedDataset. 
+## To access this endpoint/dataset there are no credentials needed (its model is not a perm:Model and no url entries in shiro.ini)
+##
+
+wbn:readOnlyService rdf:type fuseki:Service ;
+    rdfs:label                      "TDB2 readOnly service for the webern project" ;
+    fuseki:name                     "webern" ; # The url of the endpoint: http://host:port/webern
+    fuseki:serviceQuery             "query" ;
+    fuseki:serviceReadGraphStore    "get" ;
+    fuseki:dataset                  wbn:inferedDataset ;
+    .
+
+##
+## Define the fuseki:Server.
+##
+## with time outs:
+## Format 1: "1000" -- 1 second timeout
+## Format 2: "10000,60000" -- 10s timeout to first result, then 60s timeout to for rest of query.
+
+wbn:fuseki rdf:type fuseki:Server ;
+    ja:context [ 
+                ja:cxtName "arq:queryTimeout" ; 
+                ja:cxtValue "30000,60000" ] ;
+   fuseki:services (
+      wbn:dataService
+      wbn:readOnlyService
+   ) .

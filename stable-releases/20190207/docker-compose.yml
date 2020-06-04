@@ -49,11 +49,15 @@ services:
    entrypoint: ./fuseki-server
    environment:
      - FUSEKI_HOME=/apache-jena-fuseki-3.13.1/
+     - JENA_HOME=/apache-jena-fuseki-3.13.1/
    ports:
      - 3030:3030 # external:internal
    volumes:
-     - ../../fuseki/apache-jena-fuseki-3.13.1/run:/apache-jena-fuseki-3.13.1/run
-     - ../../fuseki/apache-jena-fuseki-3.13.1/tdb-data:/apache-jena-fuseki-3.13.1/tdb-data
+     - ../../fuseki/apache-jena-fuseki-3.13.1/run/configuration:/apache-jena-fuseki-3.13.1/run/configuration
+     - ../../fuseki/apache-jena-fuseki-3.13.1/run/databases:/apache-jena-fuseki-3.13.1/run/databases
+     - ../../fuseki/apache-jena-fuseki-3.13.1/run/shiro.ini:/apache-jena-fuseki-3.13.1/run/shiro.ini
+     - ../../fuseki/apache-jena-fuseki-3.13.1/scripts:/apache-jena-fuseki-3.13.1/scripts
+     - ../../fuseki/apache-jena-fuseki-3.13.1/lib/fuseki-server.jar:/apache-jena-fuseki-3.13.1/lib/fuseki-server.jar # needed for tdb2loader
 
 
   #nieos:
